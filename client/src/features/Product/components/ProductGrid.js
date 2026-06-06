@@ -1,4 +1,4 @@
-// Product Cart
+// Product Grid
 import ProductCard from "./ProductCart";
 import { products } from "../data/products";
 
