@@ -37,7 +37,7 @@ Zivora is a full-stack MERN-based clothing e-commerce platform designed for mode
 
 ---
 
-## 🏗️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 
@@ -118,7 +118,7 @@ server/
 
 ---
 
-## 🗄️ Database Design
+##  Database Design
 
 ### Collections
 
@@ -192,7 +192,7 @@ npm run dev
 
 ---
 
-## ⚙️ Environment Variables
+##  Environment Variables
 
 ### Backend
 
@@ -213,7 +213,7 @@ RAZORPAY_SECRET=
 
 ---
 
-## 🛣️ Future Improvements
+##  Future Improvements
 
 - Redis Caching
 - Recommendation Engine
@@ -226,7 +226,7 @@ RAZORPAY_SECRET=
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 Developed using the MERN Stack.
 

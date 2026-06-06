@@ -1,10 +1,10 @@
-# 👕 Zivora - Modern Clothing E-Commerce Platform
+#  Zivora - Modern Clothing E-Commerce Platform
 
 Zivora is a full-stack MERN-based clothing e-commerce platform designed for modern fashion brands. The application provides a seamless shopping experience for customers and a powerful administration panel for managing products, orders, users, and inventory.
 
 ---
 
-## 🚀 Features
+##  Features
 
 ### Customer Features
 
@@ -37,7 +37,7 @@ Zivora is a full-stack MERN-based clothing e-commerce platform designed for mode
 
 ---
 
-## 🏗️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 
@@ -118,7 +118,7 @@ server/
 
 ---
 
-## 🗄️ Database Design
+##  Database Design
 
 ### Collections
 
@@ -150,7 +150,7 @@ server/
 
 ---
 
-## 🔐 Authentication
+##  Authentication
 
 - JWT Access Token
 - Password Hashing using Bcrypt
@@ -166,7 +166,7 @@ Admin
 
 ---
 
-## 📦 Installation
+##  Installation
 
 ### Clone Repository
 
@@ -192,7 +192,7 @@ npm run dev
 
 ---
 
-## ⚙️ Environment Variables
+##  Environment Variables
 
 ### Backend
 
@@ -213,7 +213,7 @@ RAZORPAY_SECRET=
 
 ---
 
-## 🛣️ Future Improvements
+##  Future Improvements
 
 - Redis Caching
 - Recommendation Engine
@@ -226,7 +226,7 @@ RAZORPAY_SECRET=
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 Developed using the MERN Stack.
 
