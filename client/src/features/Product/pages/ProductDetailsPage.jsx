@@ -3,6 +3,7 @@ import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import { Heart } from "lucide-react";
 
+//fake data
 const product = {
   name: "Tailored Wool Blazer",
   category: "New Arrivals",
