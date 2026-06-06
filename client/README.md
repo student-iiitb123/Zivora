@@ -1,70 +1,233 @@
-# Getting Started with Create React App
+# 👕 Zivora - Modern Clothing E-Commerce Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Zivora is a full-stack MERN-based clothing e-commerce platform designed for modern fashion brands. The application provides a seamless shopping experience for customers and a powerful administration panel for managing products, orders, users, and inventory.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### Customer Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- User Registration & Login
+- JWT Authentication
+- Browse Products
+- Product Search & Filtering
+- Product Categories
+- Product Variants (Size & Color)
+- Wishlist
+- Shopping Cart
+- Secure Checkout
+- Order Tracking
+- Order History
+- Product Reviews & Ratings
+- Profile Management
+- Address Management
+- Coupon Support
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Admin Features
 
-### `npm test`
+- Dashboard Analytics
+- Product Management
+- Category Management
+- Inventory Management
+- Order Management
+- User Management
+- Coupon Management
+- Sales Reporting
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🏗️ Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React.js
+- React Router
+- Axios
+- Redux Toolkit / Zustand
+- CSS / Tailwind CSS
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Backend
 
-### `npm run eject`
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Bcrypt
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Third Party Services
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Cloudinary (Image Storage)
+- Razorpay / Stripe (Payments)
+- Nodemailer (Email Service)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📂 Project Structure
 
-## Learn More
+```text
+client/
+│
+├── public/
+│
+└── src/
+    ├── components/
+    ├── features/
+    │   ├── auth/
+    │   ├── products/
+    │   ├── cart/
+    │   ├── wishlist/
+    │   ├── orders/
+    │   ├── checkout/
+    │   └── admin/
+    │
+    ├── pages/
+    ├── layouts/
+    ├── routes/
+    ├── hooks/
+    ├── services/
+    ├── store/
+    └── utils/
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+server/
+│
+├── src/
+│   ├── config/
+│   ├── modules/
+│   │   ├── auth/
+│   │   ├── users/
+│   │   ├── products/
+│   │   ├── categories/
+│   │   ├── cart/
+│   │   ├── orders/
+│   │   ├── wishlist/
+│   │   ├── reviews/
+│   │   ├── coupons/
+│   │   └── payments/
+│   │
+│   ├── models/
+│   ├── middlewares/
+│   ├── utils/
+│   ├── app.js
+│   └── server.js
+│
+└── uploads/
+```
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🗄️ Database Design
 
-### Analyzing the Bundle Size
+### Collections
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- users
+- addresses
+- categories
+- products
+- productVariants
+- carts
+- wishlists
+- orders
+- orderItems
+- payments
+- coupons
+- reviews
 
-### Making a Progressive Web App
+### Product Variant Example
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```json
+{
+  "productId": "123",
+  "size": "M",
+  "color": "Black",
+  "sku": "TSHIRT-BLK-M",
+  "price": 799,
+  "stock": 20
+}
+```
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🔐 Authentication
 
-### Deployment
+- JWT Access Token
+- Password Hashing using Bcrypt
+- Protected Routes
+- Role Based Access Control
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Roles
 
-### `npm run build` fails to minify
+```text
+Customer
+Admin
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 📦 Installation
+
+### Clone Repository
+
+```bash
+git clone <repository-url>
+```
+
+### Frontend Setup
+
+```bash
+cd client
+npm install
+npm start
+```
+
+### Backend Setup
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+---
+
+## ⚙️ Environment Variables
+
+### Backend
+
+```env
+PORT=5000
+
+MONGO_URI=
+
+JWT_SECRET=
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+RAZORPAY_KEY_ID=
+RAZORPAY_SECRET=
+```
+
+---
+
+## 🛣️ Future Improvements
+
+- Redis Caching
+- Recommendation Engine
+- AI Fashion Suggestions
+- Multi Vendor Support
+- Loyalty Program
+- Return & Refund Management
+- Push Notifications
+- PWA Support
+
+---
+
+## 👨‍💻 Author
+
+Developed using the MERN Stack.
+
+Built with scalability, maintainability, and modern e-commerce best practices in mind.
