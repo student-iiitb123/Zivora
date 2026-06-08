@@ -23,8 +23,8 @@ import ProfilePage from './features/profile/pages/ProfilePage';
     {/* <LoginPage /> */}
     {/* <RegisterPage /> */}
     {/* <WishlistPage /> */}
-    {/* <ProfilePage /> */}
-    <OrdersPage />
+    <ProfilePage />
+    {/* <OrdersPage /> */}
     </>
   );
 }
