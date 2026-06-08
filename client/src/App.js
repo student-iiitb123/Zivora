@@ -22,8 +22,8 @@ import ProfilePage from './features/profile/pages/ProfilePage';
     {/* <CheckoutPage /> */}
     {/* <LoginPage /> */}
     {/* <RegisterPage /> */}
-    {/* <WishlistPage /> */}
-    <ProfilePage />
+    <WishlistPage />
+    {/* <ProfilePage /> */}
     {/* <OrdersPage /> */}
     </>
   );
