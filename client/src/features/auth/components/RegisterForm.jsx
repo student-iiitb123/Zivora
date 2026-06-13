@@ -5,6 +5,8 @@ import PasswordStrength from "./PasswordStrength";
 import TermsAndPreferences from "./TermsAndPreferences";
 import { signupUser } from "../../../api/authApi.js";
 
+//add services to client
+
 function RegisterForm() {
   const navigate = useNavigate();
 
