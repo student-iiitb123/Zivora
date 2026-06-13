@@ -5,7 +5,7 @@ function AuthFooter() {
         Don't have an account?{" "}
         <a
           className="text-primary font-bold hover:underline underline-offset-4 decoration-1"
-          href="#"
+          href="/register"
         >
           Register Now
         </a>
