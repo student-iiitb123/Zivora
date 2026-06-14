@@ -10,7 +10,7 @@ export default function Hero() {
           className="w-full h-[100%] object-cover object-center"
         />
 
-        {/* Overlay */}
+    
         <div className="absolute inset-0 bg-black/35"></div>
       </div>
 
