@@ -1,0 +1,67 @@
+export const inventoryProducts = [
+  {
+    id: 1,
+    name: "Structured Wool Blazer",
+    sku: "ZV-BLZ-001",
+    category: "Tailoring",
+    price: "$1,250.00",
+    stock: 12,
+    stockLabel: "4 Sizes available",
+    active: true,
+    lowStock: false,
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAiELhzYKWmc7YY16NOtd1jSjN9fsvNcTjk7IO0DRddytxduL8CPY6NEF_RYZkiHLUR9tS6ijkyXzZzWJnbE0h35SRM0USbR3qacVgUsED-5Q4RAxgGc-643OxD1fvqrcIqObJZK55NYfYMfrEBcZBdjP-hR58X7j6cudCOUFCIV8nSymBOh-JeRijoHJn-O_28vXx0OYYkk1YAjWUUjaZDuBGnwG6uLpvqvGLKSNxu8mypPNYjugZhjUhdswVPCTGLn3yKOhWh",
+  },
+  {
+    id: 2,
+    name: "Silk Drape Gown",
+    sku: "ZV-GWN-082",
+    category: "Evening Wear",
+    price: "$3,400.00",
+    stock: 2,
+    stockLabel: "Critically Low Stock",
+    active: true,
+    lowStock: true,
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBANINb8OLg4nl7hTRtMCMwG3aZONiCYC5mhYSiNJs1_qQkWIlVPPKw7GQ5A0VQGQLP_N2rQbgJcb1ijnh78kbkiC8VKT8cOziFLCkARqyQzRY0pehC6jXZMfZ5CL1ECdoSKvfMiOQ3aKmiCQk1x1qJQRvC_CTEwhRnPmD-Bs4EdgSfhbu8x2iSOoC_U9hJGGg-fA1UsA7dJ49wCdhvE_fgWadzWCbP8KRQV8DgX6N5Dg85X_FsciCRv48Uaa8ECeriRx7C0Cud",
+  },
+  {
+    id: 3,
+    name: "Cashmere Turtleneck",
+    sku: "ZV-KNT-044",
+    category: "Knitwear",
+    price: "$850.00",
+    stock: 45,
+    stockLabel: "Full size run",
+    active: true,
+    lowStock: false,
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCVWOgf3MS29W8lBnLM-t9B7xuXGgMDp3jGA51qcYFFEJPptdg9sWIj0nvv78wQskzU0zrQiapq-3MNmFoyZKGpfcbwuxQrgbYXsGbtqspIe8m15I1wdYAHZoa8HVrM5tRwdcw9K8PqLrioPbTvfXziCYsrAK4Ht9YWSQgN1JO08SOp9Z1PZgYnh3TNI0oI1_wZr7mBluR7GmeSRp61FjowJrO4zO5IQffySQRJdfR5RjlrT3BiL5KuhzHILYXltxi15SaPtfFu",
+  },
+  {
+    id: 4,
+    name: "Leather Mule (Seasonal)",
+    sku: "ZV-ACC-091",
+    category: "Accessories",
+    price: "$680.00",
+    stock: 0,
+    stockLabel: "Discontinued",
+    active: false,
+    lowStock: false,
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCZDw1r_whS1Tm1XYaLOEny_GDiYviaeZph1hZnbBBc5mOn5ZBs7lfRo4QTm7AHPRlB6jg-oFVBZv2LgGcrHxO83xUwrNDX-rhc-_NeuJ7BMxXnuKgfS5_gr-B-vqKMH7SzJBTDZWB-N5uRD1djSh0Wy7_wEVxildGp8FIYctZZOd3babXAXl7XDflA6w4QvX2ORKYDOL24Q7tmZcxHmDvgQNByMRdxtMliQ6QBM8mTz_PPuMS0qk_qc341S4WB5IeFDsZWNoFZ",
+  },
+  {
+    id: 5,
+    name: "Pleated Midi Skirt",
+    sku: "ZV-SKT-015",
+    category: "Evening Wear",
+    price: "$1,100.00",
+    stock: 18,
+    stockLabel: "Restocked 2d ago",
+    active: true,
+    lowStock: false,
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAs_dRCvPl88WlwR3KICVCrWkNFTsCFmIfcoBy04RNL14NyRwabw9jNxri-BKBorDGo6y0A5KCGwaC0CpdAzdPdClQDRtweNvRVLZjWu7TuT6m_4yqcuyiCoHQK1JXbpsiIBUNkF07TRRD73NTbNqPKe3acjD8RHW_c_YgbjU64ZS0713oZhyc1eoHI1P6SvAiLFzIqeaqkfz4OO9cp4iyraay2hIrpwV3h5gHBDs-m_hk3o6RXafNaMw-C_nxFQV0zTZLgMO8L",
+  },
+];

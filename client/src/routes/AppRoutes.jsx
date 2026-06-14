@@ -10,10 +10,17 @@ import RegisterPage from "../features/auth/pages/RegisterPage";
 import WishlistPage from "../features/WishList/pages/WishlistPage";
 import ProfilePage from "../features/profile/pages/ProfilePage";
 import OrdersPage from "../features/orders/pages/OrdersPage";
+import AdminInventoryPage from "../features/admin/pages/AdminInventoryPage";
+// Admin Page
+import AdminDashboardPage from "../features/admin/pages/AdminDashboardPage";
+import AdminOrdersPage from "../features/admin/pages/AdminOrdersPage";
+import AdminAddProductPage from "../features/admin/pages/AdminAddProductPage";
+import AdminLoginPage from "../features/admin/components/AdminLoginPage";
 
 function AppRoutes() {
   return (
     <Routes>
+      {/* User Routes */}
       <Route path="/" element={<ZivoraHome />} />
       <Route path="/products" element={<ProductListPage />} />
       <Route path="/products/:id" element={<ProductDetailPage />} />
@@ -24,6 +31,14 @@ function AppRoutes() {
       <Route path="/wishlist" element={<WishlistPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/orders" element={<OrdersPage />} />
+
+      {/* Admin Dashboard Route */}
+      <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+      <Route path="/admin/inventory" element={<AdminInventoryPage />} />
+      <Route path="/admin/orders" element={<AdminOrdersPage />} />
+      <Route path="/admin/products/new" element={<AdminAddProductPage />} />
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+
     </Routes>
   );
 }
