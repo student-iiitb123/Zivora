@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import AdminLoginInput from "./AdminLoginInput";
 
 function AdminLoginForm() {
@@ -58,17 +59,25 @@ function AdminLoginForm() {
         </a>
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full h-14 bg-black text-white text-2xl uppercase tracking-[4px] flex items-center justify-center transition-all hover:bg-neutral-800 relative overflow-hidden disabled:opacity-80"
-      >
-        {loading ? (
-          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-        ) : (
-          "LOGIN"
-        )}
-      </button>
+     <Link
+  to="/admin/dashboard"
+  className="
+    w-full
+    h-14
+    bg-black
+    text-white
+    text-2xl
+    uppercase
+    tracking-[4px]
+    flex
+    items-center
+    justify-center
+    hover:bg-neutral-800
+    transition-all
+  "
+>
+  LOGIN
+</Link>
 
       {status && (
         <div className="text-center">

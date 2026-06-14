@@ -26,11 +26,9 @@ export default function Navbar() {
 
   return (
     <header
-      id="main-nav"
-      className={`fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/20 shadow-[0px_40px_60px_rgba(0,0,0,0.05)] transition-transform duration-500 ${
-        showNavbar ? "translate-y-0" : "-translate-y-full"
-      }`}
-    >
+  id="main-nav"
+  className="relative z-50 glass-nav border-b border-white/20 shadow-[0px_40px_60px_rgba(0,0,0,0.05)]"
+>
       <div className="max-w-[1440px] mx-auto px-8 lg:px-12 py-4 flex justify-between items-center">
         <div className="flex items-center gap-8">
           <h1 className="font-display-lg text-[24px] lg:text-[28px] tracking-tighter text-primary">
