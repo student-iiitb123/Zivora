@@ -144,7 +144,7 @@ export default mongoose.model("Listing",listingSchema);
 export default mongoose.model("Listing",listingSchema);
 export default mongoose.model("Listing",listingSchema);
 export default mongoose.model("Listing",listingSchema);
-export default mongoose.model("Listing",listingSchema);
+
 
 
 
