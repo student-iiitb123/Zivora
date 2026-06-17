@@ -138,7 +138,6 @@ listingSchema.pre("save", function (next) {
 });
 
 export default mongoose.model("Listing", listingSchema);
-export default mongoose.model("listing",listingSchema);
-
+export default mongoose.model
 
 
