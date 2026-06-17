@@ -22,18 +22,19 @@ export default function FeaturedCategories() {
   ];
 
   return (
-    <section className="py-24 lg:py-32 bg-white">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12">
-        <div className="mb-12">
-          <p className="uppercase tracking-[6px] text-sm text-black/50 mb-3">
+    <section className="py-14 sm:py-20 lg:py-32 bg-white">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
+        <div className="mb-10 sm:mb-12">
+          <p className="uppercase tracking-[4px] sm:tracking-[6px] text-xs sm:text-sm text-black/50 mb-3">
             Shop by Category
           </p>
-          <h2 className="text-4xl lg:text-5xl font-semibold tracking-tight text-black">
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-black">
             FEATURED COLLECTIONS
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[360px] gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[280px] sm:auto-rows-[320px] lg:auto-rows-[360px] gap-4 sm:gap-6">
           {categories.map((item) => (
             <div
               key={item.title}
@@ -51,14 +52,14 @@ export default function FeaturedCategories() {
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
 
-              <div className="absolute left-6 bottom-6 lg:left-8 lg:bottom-8">
+              <div className="absolute left-4 bottom-4 sm:left-6 sm:bottom-6 lg:left-8 lg:bottom-8">
                 {item.label && (
-                  <span className="text-xs uppercase tracking-[5px] text-white/70 block mb-3">
+                  <span className="text-[10px] sm:text-xs uppercase tracking-[4px] sm:tracking-[5px] text-white/70 block mb-2 sm:mb-3">
                     {item.label}
                   </span>
                 )}
 
-                <h3 className="text-3xl lg:text-4xl font-bold tracking-tight text-white uppercase">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white uppercase">
                   {item.title}
                 </h3>
               </div>

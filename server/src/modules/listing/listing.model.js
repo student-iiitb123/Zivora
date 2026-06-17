@@ -74,7 +74,6 @@ const listingSchema = new mongoose.Schema(
       sale_price: {
         type: Number,
         default: null,
-      default:null,
         min: 0,
       },
       currency: {
@@ -139,6 +138,7 @@ listingSchema.pre("save", function (next) {
 });
 
 export default mongoose.model("Listing", listingSchema);
+
 
 
 
