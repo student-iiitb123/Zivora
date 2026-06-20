@@ -1,32 +1,56 @@
-
 import Listing from "./listing.model.js";
 
-// CREATE LISTING
 export const createListing = async (req, res) => {
   try {
-    const listing = await Listing.create(req.body);
+    const images = req.files.map((file, index) => ({
+      url: file.path,
+      is_primary: index === 0,
+      sort_order: index + 1,
+    }));
+
+    const listing = await Listing.create({
+      seller_id: req.body.seller_id,
+      product_name: req.body.product_name,
+      description: req.body.description,
+      category: req.body.category,
+
+      sizes: JSON.parse(req.body.sizes),
+      colors: JSON.parse(req.body.colors),
+      collections: JSON.parse(req.body.collections),
+
+      base_price: req.body.base_price,
+      sale_price: req.body.sale_price,
+
+      sku: req.body.sku,
+
+      initial_stock: req.body.initial_stock,
+      stock: req.body.initial_stock,
+
+      is_featured: req.body.is_featured,
+      status: req.body.status,
+
+      media: images,
+    });
 
     res.status(201).json({
       success: true,
-      message: "Listing created successfully",
       data: listing,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
-// GET ALL LISTINGS
 export const getAllListings = async (req, res) => {
   try {
     const listings = await Listing.find()
       .populate("seller_id", "name email")
-      .populate("collections");
+      .sort("-createdAt");
 
-    res.status(200).json({
+    res.json({
       success: true,
       count: listings.length,
       data: listings,
@@ -39,12 +63,10 @@ export const getAllListings = async (req, res) => {
   }
 };
 
-// GET SINGLE LISTING
-export const getSingleListing = async (req, res) => {
+
+export const getListingById = async (req, res) => {
   try {
-    const listing = await Listing.findById(req.params.id)
-      .populate("seller_id", "name email")
-      .populate("collections");
+    const listing = await Listing.findById(req.params.id);
 
     if (!listing) {
       return res.status(404).json({
@@ -53,7 +75,7 @@ export const getSingleListing = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    res.json({
       success: true,
       data: listing,
     });
@@ -65,7 +87,7 @@ export const getSingleListing = async (req, res) => {
   }
 };
 
-// UPDATE LISTING
+
 export const updateListing = async (req, res) => {
   try {
     const listing = await Listing.findByIdAndUpdate(
@@ -73,43 +95,26 @@ export const updateListing = async (req, res) => {
       req.body,
       {
         new: true,
-        runValidators: true,
       }
     );
 
-    if (!listing) {
-      return res.status(404).json({
-        success: false,
-        message: "Listing not found",
-      });
-    }
-
-    res.status(200).json({
+    res.json({
       success: true,
-      message: "Listing updated successfully",
       data: listing,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
-// DELETE LISTING
 export const deleteListing = async (req, res) => {
   try {
-    const listing = await Listing.findByIdAndDelete(req.params.id);
+    await Listing.findByIdAndDelete(req.params.id);
 
-    if (!listing) {
-      return res.status(404).json({
-        success: false,
-        message: "Listing not found",
-      });
-    }
-
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Listing deleted successfully",
     });
