@@ -3,7 +3,11 @@ import { useState } from "react";
 import StatusToggle from "./StatusToggle";
 
 function InventoryRow({ product }) {
-  const [active, setActive] = useState(product.active);
+  const [active, setActive] = useState(
+    product.status === "published"
+  );
+
+  const isLowStock = product.initial_stock < 10;
 
   return (
     <tr
@@ -20,8 +24,8 @@ function InventoryRow({ product }) {
         >
           <div className="w-16 h-20 bg-neutral-100 overflow-hidden flex-shrink-0">
             <img
-              src={product.image}
-              alt={product.name}
+              src={product.media?.[0]?.url}
+              alt={product.product_name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           </div>
@@ -32,7 +36,7 @@ function InventoryRow({ product }) {
                 !active ? "italic" : ""
               }`}
             >
-              {product.name}
+              {product.product_name}
             </span>
 
             <span className="text-[11px] text-black/40 uppercase">
@@ -49,7 +53,7 @@ function InventoryRow({ product }) {
 
       {/* Price */}
       <td className="px-6 py-6 text-sm font-semibold">
-        {product.price}
+        ₹{product.base_price}
       </td>
 
       {/* Stock */}
@@ -58,15 +62,15 @@ function InventoryRow({ product }) {
           <div className="flex items-center gap-2">
             <span
               className={`text-sm font-medium ${
-                product.lowStock
+                isLowStock
                   ? "text-red-600 font-bold"
                   : "text-black"
               }`}
             >
-              {product.stock} Units
+              {product.initial_stock} Units
             </span>
 
-            {product.lowStock && (
+            {isLowStock && (
               <AlertTriangle
                 size={14}
                 className="text-red-600"
@@ -76,12 +80,12 @@ function InventoryRow({ product }) {
 
           <span
             className={`text-[10px] uppercase ${
-              product.lowStock
+              isLowStock
                 ? "text-red-500 font-semibold"
                 : "text-black/40"
             }`}
           >
-            {product.stockLabel}
+            {isLowStock ? "Low Stock" : "In Stock"}
           </span>
         </div>
       </td>

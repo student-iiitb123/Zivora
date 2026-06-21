@@ -5,7 +5,11 @@ function InventoryStatCard({ stat }) {
         {stat.label}
       </span>
 
-      <span className={`text-3xl font-semibold ${stat.danger ? "text-red-600" : "text-black"}`}>
+      <span
+        className={`text-3xl font-semibold ${
+          stat.danger ? "text-red-600" : "text-black"
+        }`}
+      >
         {stat.value}
       </span>
 
@@ -17,7 +21,11 @@ function InventoryStatCard({ stat }) {
           />
         </div>
       ) : (
-        <span className={`text-[11px] mt-2 ${stat.success ? "text-green-600" : "text-black/50"}`}>
+        <span
+          className={`text-[11px] mt-2 ${
+            stat.success ? "text-green-600" : "text-black/50"
+          }`}
+        >
           {stat.subtext}
         </span>
       )}
