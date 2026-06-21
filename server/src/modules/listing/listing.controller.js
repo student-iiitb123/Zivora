@@ -17,7 +17,7 @@ export const createListing = async (req, res) => {
       product_name: req.body.product_name,
       description: req.body.description,
       category: req.body.category,
-      media: media || [],   // ✅ IMPORTANT FIX
+      media: media || [],   
       sizes: JSON.parse(req.body.sizes || "[]"),
       colors: JSON.parse(req.body.colors || "[]"),
       collections: JSON.parse(req.body.collections || "[]"),
