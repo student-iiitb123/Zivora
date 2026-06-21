@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function FeaturedCategories() {
   const categories = [
     {
@@ -5,19 +7,23 @@ export default function FeaturedCategories() {
       label: "COLLECTION 01",
       img: "./assets/man.png",
       large: true,
+      link: "/products?category=Men",
     },
     {
       title: "WOMEN",
       img: "./assets/women.png",
+      link: "/products?category=Women",
     },
     {
       title: "ACCESSORIES",
       img: "https://lh3.googleusercontent.com/aida/AP1WRLsHJFAHB9fLJlgsWqUsKy0At02GcP_goqpSkgA5VoJ0JnSFfbfE9XoEyafCCaO-pnvbJrJ_vCRyiivc17_XXVlxuKJd8SQqM3181OFCxCS83QzYD9UHVSyxWq8vBsdCq7BXb0fax63dfIViKZ-AU_KswXEnZHfuS8buGpvYLWTV1zGLFTHJzz_8w1w8ixCZNOswYMthsNOI9lXfeSwqciM26X46jpN0YMrH4En9HH2u1gi9wr-gEhH3",
+      link: "/products?category=Accessories",
     },
     {
       title: "FOOTWEAR",
       img: "https://lh3.googleusercontent.com/aida/AP1WRLvbCBCwSCRR6qYMa_09UKFFqoBzwjiAPOomGLWyvKwEE4H857VoBVxNsdykoUUVwPvwJpuu4WT1ShbGeyMsUKhH9_9XPI5ePnq-OzuX4_2MgWtbYuw5QdA1MHpyZpymSw30klO3iD2B-1tsqLDpYMiICTqev83fs5wz8RdGLsw3qdsToNknlu_8dL4ZRM2Qg--pnh29tqS7eq7TTQB4Br7ZGdrhGcIemlPq6Tko_0wyOeTB3QTOGilt",
       wide: true,
+      link: "/products?category=Footwear",
     },
   ];
 
@@ -36,10 +42,11 @@ export default function FeaturedCategories() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 auto-rows-[280px] sm:auto-rows-[320px] lg:auto-rows-[360px] gap-4 sm:gap-6">
           {categories.map((item) => (
-            <div
+            <Link
+              to={item.link}
               key={item.title}
               className={`
-                group relative overflow-hidden cursor-pointer bg-neutral-100
+                group relative overflow-hidden cursor-pointer bg-neutral-100 block
                 ${item.large ? "lg:col-span-2 lg:row-span-2" : ""}
                 ${item.wide ? "lg:col-span-2" : ""}
               `}
@@ -63,7 +70,7 @@ export default function FeaturedCategories() {
                   {item.title}
                 </h3>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

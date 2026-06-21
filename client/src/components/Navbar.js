@@ -42,10 +42,10 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden md:flex gap-6">
-            <Link className="font-label-md text-label-md text-primary border-b border-primary pb-1" to="/men">
+            <Link className="font-label-md text-label-md text-primary border-b border-primary pb-1" to="/products?category=Men">
               MEN
             </Link>
-            <Link className="font-label-md text-label-md text-secondary hover:text-primary transition-colors" to="/women">
+            <Link className="font-label-md text-label-md text-secondary hover:text-primary transition-colors" to="/products?category=Women">
               WOMEN
             </Link>
             <Link className="font-label-md text-label-md text-secondary hover:text-primary transition-colors" to="/new-arrivals">

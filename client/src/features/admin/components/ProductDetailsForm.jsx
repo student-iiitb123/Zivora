@@ -50,9 +50,8 @@ function ProductDetailsForm({ formData, setFormData }) {
             }
             className="w-full bg-transparent border-0 border-b border-black/20 py-3 focus:ring-0 focus:border-black"
           >
-            <option>Outerwear</option>
-            <option>Dresses</option>
-            <option>Tops</option>
+            <option>Men</option>
+            <option>Women</option>
             <option>Accessories</option>
           </select>
         </div>

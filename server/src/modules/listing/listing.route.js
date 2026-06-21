@@ -28,5 +28,6 @@ router.get("/", getAllListings);
 router.get("/:id", getListingById);
 router.put("/:id", updateListing);
 router.delete("/:id", deleteListing);
+router.get("/best-sellers", getBestSellers);
 
 export default router;

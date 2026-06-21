@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Hero() {
   return (
     <section className="relative min-h-[750px] md:h-screen overflow-hidden">
@@ -97,43 +99,47 @@ export default function Hero() {
             sm:w-auto
           "
         >
-          <button
-            className="
-              w-full
-              sm:w-auto
-              bg-white
-              text-black
-              px-10
-              py-4
-              uppercase
-              tracking-widest
-              font-medium
-              hover:scale-105
-              transition
-            "
-          >
-            Shop Men
-          </button>
+       <Link
+  to="/products?category=Men"
+  className="
+    w-full
+    sm:w-auto
+    bg-white
+    text-black
+    px-10
+    py-4
+    uppercase
+    tracking-widest
+    font-medium
+    hover:scale-105
+    transition
+    text-center
+  "
+>
+  Shop Men
+</Link>
 
-          <button
-            className="
-              w-full
-              sm:w-auto
-              border
-              border-white
-              text-white
-              px-10
-              py-4
-              uppercase
-              tracking-widest
-              font-medium
-              hover:bg-white
-              hover:text-black
-              transition
-            "
-          >
-            Shop Women
-          </button>
+        <Link
+  to="/products?category=Women"
+  className="
+    w-full
+    sm:w-auto
+    border
+    border-white
+    text-white
+    px-10
+    py-4
+    uppercase
+    tracking-widest
+    font-medium
+    hover:bg-white
+    hover:text-black
+    transition
+    text-center
+  "
+>
+  Shop Women
+</Link>
         </div>
       </div>
 
