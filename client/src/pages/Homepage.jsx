@@ -31,9 +31,9 @@ useEffect(() => {
     let lastScroll = 0;
     const nav = document.getElementById("main-nav");
 
-    const handleNavScroll = () => {
+      const handleNavScroll = () => {
       const currentScroll = window.pageYOffset;
-
+  
       if (currentScroll <= 0) {
         nav?.classList.remove("shadow-xl", "py-2");
         nav?.classList.add("py-4");
