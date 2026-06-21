@@ -1,14 +1,23 @@
 import listingModel from "./listing.model.js";
+
 export const createListing = async (req, res) => {
   try {
     console.log("BODY:", req.body);
     console.log("FILES:", req.files);
+
+    const media = req.files?.map((file, index) => ({
+      url: file.path || file.location,
+      is_primary: index === 0,
+      sort_order: index,
+      aspect_ratio: "4:5",
+    }));
 
     const listing = await listingModel.create({
       seller_id: req.body.seller_id,
       product_name: req.body.product_name,
       description: req.body.description,
       category: req.body.category,
+      media: media || [],   // ✅ IMPORTANT FIX
       sizes: JSON.parse(req.body.sizes || "[]"),
       colors: JSON.parse(req.body.colors || "[]"),
       collections: JSON.parse(req.body.collections || "[]"),
@@ -30,7 +39,6 @@ export const createListing = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message,
-      error,
     });
   }
 };
