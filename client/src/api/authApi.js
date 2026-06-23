@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://zivora-262a.onrender.com/api/auth";
 
 export const signupUser = async (formData) => {
   const res = await fetch(`${API_URL}/signup`, {
