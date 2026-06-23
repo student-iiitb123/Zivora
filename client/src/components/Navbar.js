@@ -207,27 +207,121 @@ export default function Navbar() {
       </div>
 
       {/* MOBILE MENU */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t px-4 py-5">
-          <nav className="flex flex-col gap-4">
-            <Link onClick={closeMobileMenu} to="/products?category=Men">
-              MEN
-            </Link>
-            <Link onClick={closeMobileMenu} to="/products?category=Women">
-              WOMEN
-            </Link>
-            <Link onClick={closeMobileMenu} to="/new-arrivals">
-              NEW ARRIVALS
-            </Link>
-            <Link onClick={closeMobileMenu} to="/collections">
-              COLLECTIONS
-            </Link>
-            <Link onClick={closeMobileMenu} to="/sale">
-              SALE
-            </Link>
-          </nav>
+     {mobileMenuOpen && (
+  <div className="md:hidden bg-white border-t border-black/10 px-4 py-5 shadow-xl">
+
+    {/* Search */}
+    <div className="mb-5 flex items-center h-11 w-full bg-neutral-100 px-4 rounded-full border border-black/10">
+      <Search size={18} strokeWidth={1.8} className="text-black/50 mr-3" />
+
+      <input
+        className="w-full bg-transparent border-none outline-none text-sm placeholder:text-black/40"
+        placeholder="Search products..."
+        type="text"
+      />
+    </div>
+
+    {/* Navigation */}
+    <nav className="flex flex-col gap-4">
+      <Link
+        onClick={closeMobileMenu}
+        to="/products?category=Men"
+        className="text-sm font-medium tracking-widest"
+      >
+        MEN
+      </Link>
+
+      <Link
+        onClick={closeMobileMenu}
+        to="/products?category=Women"
+        className="text-sm font-medium tracking-widest"
+      >
+        WOMEN
+      </Link>
+
+      <Link
+        onClick={closeMobileMenu}
+        to="/new-arrivals"
+        className="text-sm font-medium tracking-widest"
+      >
+        NEW ARRIVALS
+      </Link>
+
+      <Link
+        onClick={closeMobileMenu}
+        to="/collections"
+        className="text-sm font-medium tracking-widest"
+      >
+        COLLECTIONS
+      </Link>
+    </nav>
+
+    {/* Login / Profile Section */}
+    <div className="mt-6 pt-6 border-t border-black/10">
+      {!isLoggedIn ? (
+        <div className="flex flex-col gap-3">
+
+          <Link
+            onClick={closeMobileMenu}
+            to="/login"
+            className="w-full text-center border border-black py-3 rounded-full text-sm font-medium"
+          >
+            Login as User
+          </Link>
+
+          <Link
+            onClick={closeMobileMenu}
+            to="/admin/login"
+            className="w-full text-center border border-black py-3 rounded-full text-sm font-medium"
+          >
+            Login as Admin
+          </Link>
+
+          <Link
+            onClick={closeMobileMenu}
+            to="/register"
+            className="w-full text-center bg-black text-white py-3 rounded-full text-sm font-medium"
+          >
+            Signup
+          </Link>
+
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-3">
+
+          <Link
+            onClick={closeMobileMenu}
+            to="/wishlist"
+            className="flex flex-col items-center justify-center gap-2 bg-neutral-100 py-4 rounded-xl text-xs"
+          >
+            <Heart size={20} />
+            Wishlist
+          </Link>
+
+          <Link
+            onClick={closeMobileMenu}
+            to="/cart"
+            className="flex flex-col items-center justify-center gap-2 bg-neutral-100 py-4 rounded-xl text-xs"
+          >
+            <ShoppingBag size={20} />
+            Bag
+          </Link>
+
+          <Link
+            onClick={closeMobileMenu}
+            to="/profile"
+            className="flex flex-col items-center justify-center gap-2 bg-neutral-100 py-4 rounded-xl text-xs"
+          >
+            <CircleUserRound size={20} />
+            Profile
+          </Link>
+
         </div>
       )}
+    </div>
+
+  </div>
+)}
     </header>
   );
 }
