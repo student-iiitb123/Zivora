@@ -16,12 +16,12 @@ export default function FeaturedCategories() {
     },
     {
       title: "ACCESSORIES",
-      img: "https://lh3.googleusercontent.com/aida/AP1WRLsHJFAHB9fLJlgsWqUsKy0At02GcP_goqpSkgA5VoJ0JnSFfbfE9XoEyafCCaO-pnvbJrJ_vCRyiivc17_XXVlxuKJd8SQqM3181OFCxCS83QzYD9UHVSyxWq8vBsdCq7BXb0fax63dfIViKZ-AU_KswXEnZHfuS8buGpvYLWTV1zGLFTHJzz_8w1w8ixCZNOswYMthsNOI9lXfeSwqciM26X46jpN0YMrH4En9HH2u1gi9wr-gEhH3",
+      img: "./assets/ashish.jpg",
       link: "/products?category=Accessories",
     },
     {
       title: "FOOTWEAR",
-      img: "https://lh3.googleusercontent.com/aida/AP1WRLvbCBCwSCRR6qYMa_09UKFFqoBzwjiAPOomGLWyvKwEE4H857VoBVxNsdykoUUVwPvwJpuu4WT1ShbGeyMsUKhH9_9XPI5ePnq-OzuX4_2MgWtbYuw5QdA1MHpyZpymSw30klO3iD2B-1tsqLDpYMiICTqev83fs5wz8RdGLsw3qdsToNknlu_8dL4ZRM2Qg--pnh29tqS7eq7TTQB4Br7ZGdrhGcIemlPq6Tko_0wyOeTB3QTOGilt",
+      img: "https://i.pinimg.com/736x/11/8a/23/118a23e1dd2d02a94683a00c7e185c3f.jpg",
       wide: true,
       link: "/products?category=Footwear",
     },

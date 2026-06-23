@@ -12,6 +12,8 @@ import ProfilePage from "../features/profile/pages/ProfilePage";
 import OrdersPage from "../features/orders/pages/OrdersPage";
 import AdminInventoryPage from "../features/admin/pages/AdminInventoryPage";
 import OrderSuccessPage from "../features/orders/pages/OrderSuccessPage";
+import NewArrivalPage from "../pages/NewArrival";
+import CollectionPage from "../pages/CollectionPage";
 // Admin Page
 
 import AdminDashboardPage from "../features/admin/pages/AdminDashboardPage";
@@ -39,7 +41,11 @@ function AppRoutes() {
       <Route
   path="/order-success/:orderId"
   element={<OrderSuccessPage />}
+
 />
+ <Route path="/new-arrivals" element={<NewArrivalPage />} />
+ <Route path="/collections" element={<CollectionPage />} />
+     
       {/* Admin Dashboard Route */}
 
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
