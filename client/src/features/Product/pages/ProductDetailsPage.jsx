@@ -20,7 +20,7 @@ const navigate = useNavigate();
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/listings/${id}`
+          `https://zivora-262a.onrender.com/api/listings/${id}`
         );
 
         setProduct(data.data);

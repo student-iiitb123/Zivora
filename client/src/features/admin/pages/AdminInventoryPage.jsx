@@ -15,7 +15,7 @@ function AdminInventoryPage() {
 const fetchProducts = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:5000/api/listings"
+      "https://zivora-262a.onrender.com/api/listings"
     );
 
     setProducts(response.data.data);

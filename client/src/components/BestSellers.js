@@ -10,7 +10,7 @@ export default function BestSellers() {
     const fetchBestSellers = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/listings/best-sellers"
+          "https://zivora-262a.onrender.com/api/listings/best-sellers"
         );
 
         setProducts(data.data);

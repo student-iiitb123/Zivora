@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/orders";
+const API = "https://zivora-262a.onrender.com/api/orders";
 
 export const placeOrder = (data) =>
   axios.post(`${API}/checkout`, data);
@@ -10,6 +10,6 @@ export const getUserOrders = (userId) =>
 
 export const getAllOrders = () => {
   return axios.get(
-    "http://localhost:5000/api/orders/admin"
+    "https://zivora-262a.onrender.com/api/orders/admin"
   );
 };

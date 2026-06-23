@@ -17,7 +17,6 @@ function AdminSidebar({ sidebarOpen, setSidebarOpen }) {
     { label: "Orders", icon: ShoppingBag, path: "/admin/orders" },
     { label: "Inventory", icon: Boxes, path: "/admin/inventory" },
     { label: "Customers", icon: Users, path: "/admin/customers" },
-    { label: "Analytics", icon: BarChart3, path: "/admin/analytics" },
     { label: "Settings", icon: Settings, path: "/admin/settings" },
   ];
 

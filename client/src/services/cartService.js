@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/cart";
+const API = "https://zivora-262a.onrender.com/api/cart";
 
 export const getCart = (userId) => {
   return axios.get(`${API}/${userId}`);

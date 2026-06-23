@@ -17,7 +17,7 @@ function ProductListPage() {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/listings"
+          "https://zivora-262a.onrender.com/api/listings"
         );
 
         console.log(data.data);
