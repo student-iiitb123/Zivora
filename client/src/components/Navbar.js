@@ -8,19 +8,49 @@ import {
   X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getCart } from "../services/cartService";
 
 export default function Navbar() {
   const [showLoginOptions, setShowLoginOptions] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isLoggedIn = !!localStorage.getItem("token");
-
+const [cartCount, setCartCount] = useState(0);
   useEffect(() => {
     const handleScroll = () => {};
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+  const fetchCartCount = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user?._id) {
+        setCartCount(0);
+        return;
+      }
+
+      const res = await getCart(user._id);
+
+      const items = res.data.cart?.items || [];
+
+      const totalItems = items.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+
+      setCartCount(totalItems);
+    } catch (error) {
+      console.log(error);
+      setCartCount(0);
+    }
+  };
+
+  fetchCartCount();
+}, []);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -107,9 +137,11 @@ export default function Navbar() {
 
               <Link to="/cart" className="relative hover:opacity-60 transition">
                 <ShoppingBag size={22} strokeWidth={1.8} />
-                <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-medium">
-                  2
-                </span>
+         {cartCount > 0 && (
+  <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-medium">
+    {cartCount}
+  </span>
+)}
               </Link>
 
               <Link to="/profile" className="hover:opacity-60 transition">

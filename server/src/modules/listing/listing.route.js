@@ -8,6 +8,7 @@ import {
   updateListing,
   deleteListing,
 } from "./listing.controller.js";
+import { getBestSellers } from "./listing.controller.js";
 
 const router = express.Router();
 

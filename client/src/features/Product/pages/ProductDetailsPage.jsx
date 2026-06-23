@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { addToCart } from "../../../services/cartService";
 import axios from "axios";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
@@ -12,6 +13,8 @@ function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -25,6 +28,9 @@ function ProductDetailPage() {
         if (data.data.sizes?.length > 0) {
           setSelectedSize(data.data.sizes[0]);
         }
+        if (data.data.colors?.length > 0) {
+  setSelectedColor(data.data.colors[0]);
+}
       } catch (error) {
         console.error(error);
       } finally {
@@ -34,6 +40,32 @@ function ProductDetailPage() {
 
     fetchProduct();
   }, [id]);
+
+  const handleAddToBag = async () => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user?._id) {
+      alert("Please login first");
+      navigate("/login");
+      return;
+    }
+
+    const res = await addToCart({
+      userId: user._id,
+      productId: product._id,
+      quantity: 1,
+      size: selectedSize,
+      color: selectedColor,
+    });
+
+    console.log("Add To Cart Response:", res.data);
+
+    navigate("/cart");
+  } catch (error) {
+    console.error("Add To Cart Error:", error);
+  }
+};
 
   if (loading) {
     return (
@@ -116,14 +148,19 @@ function ProductDetailPage() {
                 </p>
 
                 <div className="flex flex-wrap gap-2">
-                  {product.colors.map((color, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 border text-xs uppercase"
-                    >
-                      {color}
-                    </span>
-                  ))}
+                 {product.colors.map((color, index) => (
+  <button
+    key={index}
+    onClick={() => setSelectedColor(color)}
+    className={`px-3 py-1 border text-xs uppercase ${
+      selectedColor === color
+        ? "bg-black text-white"
+        : ""
+    }`}
+  >
+    {color}
+  </button>
+))}
                 </div>
               </div>
             )}
@@ -164,9 +201,12 @@ function ProductDetailPage() {
 
             {/* Buttons */}
             <div className="space-y-4 mb-10">
-              <button className="w-full h-14 bg-black text-white uppercase tracking-[4px] text-sm">
-                Add To Bag
-              </button>
+            <button
+  onClick={handleAddToBag}
+  className="w-full h-14 bg-black text-white uppercase tracking-[4px] text-sm"
+>
+  Add To Bag
+</button>
 
               <button className="w-full h-14 border border-black uppercase tracking-[4px] text-sm flex items-center justify-center gap-3">
                 <Heart size={18} />
