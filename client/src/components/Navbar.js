@@ -114,7 +114,7 @@ export default function Navbar() {
               COLLECTIONS
             </NavLink>
 
-            <NavLink
+            {/* <NavLink
               to="/sale"
               className={({ isActive }) =>
                 `font-label-md text-label-md pb-1 border-b transition-all duration-300 ${
@@ -125,7 +125,7 @@ export default function Navbar() {
               }
             >
               SALE
-            </NavLink>
+            </NavLink> */}
           </nav>
         </div>
 
