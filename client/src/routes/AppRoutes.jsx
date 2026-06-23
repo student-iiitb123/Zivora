@@ -11,15 +11,15 @@ import WishlistPage from "../features/WishList/pages/WishlistPage";
 import ProfilePage from "../features/profile/pages/ProfilePage";
 import OrdersPage from "../features/orders/pages/OrdersPage";
 import AdminInventoryPage from "../features/admin/pages/AdminInventoryPage";
-
+import OrderSuccessPage from "../features/orders/pages/OrderSuccessPage";
 // Admin Page
 
 import AdminDashboardPage from "../features/admin/pages/AdminDashboardPage";
 import AdminOrdersPage from "../features/admin/pages/AdminOrdersPage";
 import AdminAddProductPage from "../features/admin/pages/AdminAddProductPage";
 import AdminLoginPage from "../features/admin/components/AdminLoginPage";
-
-
+import AdminCustomersPage from "../features/admin/pages/AdminCustomerPage";
+import SettingsPage from "../features/admin/pages/SettingPage";
 function AppRoutes() {
   return (
     <Routes>
@@ -36,7 +36,10 @@ function AppRoutes() {
       <Route path="/wishlist" element={<WishlistPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/orders" element={<OrdersPage />} />
-
+      <Route
+  path="/order-success/:orderId"
+  element={<OrderSuccessPage />}
+/>
       {/* Admin Dashboard Route */}
 
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
@@ -44,8 +47,8 @@ function AppRoutes() {
       <Route path="/admin/orders" element={<AdminOrdersPage />} />
       <Route path="/admin/products/new" element={<AdminAddProductPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} /> 
-     
-      
+     <Route path="/admin/customers" element={<AdminCustomersPage />} />
+    <Route path="/admin/settings" element={<SettingsPage />} />
   
 
     </Routes>

@@ -1,6 +1,16 @@
 import FloatingInput from "./FloatingInput";
 
-function ShippingForm() {
+function ShippingForm({
+  shippingAddress,
+  setShippingAddress,
+}) {
+  const handleChange = (field, value) => {
+    setShippingAddress({
+      ...shippingAddress,
+      [field]: value,
+    });
+  };
+
   return (
     <section>
       <div className="flex justify-between mb-8">
@@ -15,19 +25,65 @@ function ShippingForm() {
 
       <div className="grid md:grid-cols-2 gap-8">
 
-        <FloatingInput label="First Name" />
-        <FloatingInput label="Last Name" />
+        <FloatingInput
+          label="Full Name"
+          value={shippingAddress.fullName}
+          onChange={(e) =>
+            handleChange("fullName", e.target.value)
+          }
+        />
+
+        <FloatingInput
+          label="Phone Number"
+          value={shippingAddress.phone}
+          onChange={(e) =>
+            handleChange("phone", e.target.value)
+          }
+        />
 
         <div className="md:col-span-2">
-          <FloatingInput label="Email Address" />
+          <FloatingInput
+            label="Email Address"
+            value={shippingAddress.email}
+            onChange={(e) =>
+              handleChange("email", e.target.value)
+            }
+          />
         </div>
 
         <div className="md:col-span-2">
-          <FloatingInput label="Street Address" />
+          <FloatingInput
+            label="Street Address"
+            value={shippingAddress.address}
+            onChange={(e) =>
+              handleChange("address", e.target.value)
+            }
+          />
         </div>
 
-        <FloatingInput label="City" />
-        <FloatingInput label="Postal Code" />
+        <FloatingInput
+          label="City"
+          value={shippingAddress.city}
+          onChange={(e) =>
+            handleChange("city", e.target.value)
+          }
+        />
+
+        <FloatingInput
+          label="State"
+          value={shippingAddress.state}
+          onChange={(e) =>
+            handleChange("state", e.target.value)
+          }
+        />
+
+        <FloatingInput
+          label="Postal Code"
+          value={shippingAddress.pincode}
+          onChange={(e) =>
+            handleChange("pincode", e.target.value)
+          }
+        />
 
       </div>
     </section>

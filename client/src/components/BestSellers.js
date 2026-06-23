@@ -50,14 +50,40 @@ export default function BestSellers() {
         </div>
 
         {/* Products */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          {products.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-            />
-          ))}
-        </div>
+      {products.length > 0 ? (
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+    {products.map((product) => (
+      <ProductCard
+        key={product._id}
+        product={product}
+      />
+    ))}
+  </div>
+) : (
+  <div className="flex flex-col items-center justify-center py-24 text-center border border-black/10 bg-white">
+    <div className="w-20 h-20 rounded-full bg-neutral-100 flex items-center justify-center mb-6">
+      <span className="material-symbols-outlined text-4xl text-black/40">
+        inventory_2
+      </span>
+    </div>
+
+    <h3 className="text-3xl font-semibold text-black mb-3">
+      No Best Sellers Yet
+    </h3>
+
+    <p className="max-w-md text-black/50 text-sm leading-7 mb-8">
+      Our curated collection is being updated. Check back soon to discover
+      timeless pieces and customer favorites.
+    </p>
+
+    <button
+      onClick={() => navigate("/products")}
+      className="px-8 py-4 bg-black text-white text-sm uppercase tracking-[4px] hover:bg-neutral-800 transition"
+    >
+      Explore Collection
+    </button>
+  </div>
+)}
 
       </div>
     </section>

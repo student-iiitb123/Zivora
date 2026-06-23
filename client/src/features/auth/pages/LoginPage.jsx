@@ -7,8 +7,9 @@ import Footer from "../../../components/Footer";
 function LoginPage() {
   return (
     <>
+      <Navbar />
     <main className="min-h-screen flex bg-[#fbf9f9]">
-        <Navbar />
+      
       <EditorialPanel />
 
       <section className="w-full md:w-1/2 min-h-screen flex items-center justify-center px-6 md:px-16 relative">

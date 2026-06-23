@@ -1,21 +1,31 @@
 function PerformanceChart() {
   return (
-    <div className="lg:col-span-2 bg-white p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.08)] rounded-sm">
-      <div className="flex justify-between items-center mb-8">
-        <h3 className="text-2xl font-semibold">
+    <div className="bg-white p-4 sm:p-6 lg:p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.08)] rounded-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+        <h3 className="text-xl sm:text-2xl font-semibold">
           Product Performance
         </h3>
 
-        <select className="bg-transparent border-none text-sm text-black/50 focus:ring-0">
+        <select className="bg-transparent border border-black/10 px-3 py-2 text-xs sm:text-sm text-black/50 rounded-sm focus:outline-none">
           <option>Last 30 Days</option>
           <option>Last 6 Months</option>
         </select>
       </div>
 
-      <div className="relative h-64 w-full">
-        <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 300">
+      <div className="relative h-52 sm:h-64 w-full">
+        <svg
+          className="w-full h-full"
+          preserveAspectRatio="none"
+          viewBox="0 0 1000 300"
+        >
           <defs>
-            <linearGradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+            <linearGradient
+              id="gradient"
+              x1="0%"
+              x2="0%"
+              y1="0%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="black" stopOpacity="0.1" />
               <stop offset="100%" stopColor="black" stopOpacity="0" />
             </linearGradient>
@@ -34,7 +44,7 @@ function PerformanceChart() {
           />
         </svg>
 
-        <div className="flex justify-between mt-4 text-[10px] font-bold text-black/50 uppercase tracking-[3px]">
+        <div className="flex justify-between mt-4 text-[8px] sm:text-[10px] font-bold text-black/50 uppercase tracking-[1px] sm:tracking-[3px]">
           <span>Week 1</span>
           <span>Week 2</span>
           <span>Week 3</span>

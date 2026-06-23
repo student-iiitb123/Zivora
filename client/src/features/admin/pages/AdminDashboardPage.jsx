@@ -22,17 +22,26 @@ function AdminDashboardPage() {
 
   return (
     <AdminLayout>
-      <div className="p-8 lg:p-16 space-y-6 max-w-[1440px] mx-auto">
+      <div className="w-full max-w-[1440px] mx-auto px-4 py-6 sm:px-6 md:px-8 lg:px-12 xl:px-16 space-y-6">
+        
         <DashboardHeader />
 
         <AdminStatsGrid />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <PerformanceChart />
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          
+          <div className="xl:col-span-2">
+            <PerformanceChart />
+          </div>
 
-          <CampaignSpotlight />
+          <div className="xl:col-span-1">
+            <CampaignSpotlight />
+          </div>
 
-          <RecentOrdersTable />
+          <div className="xl:col-span-3">
+            <RecentOrdersTable />
+          </div>
+
         </div>
       </div>
 

@@ -1,8 +1,12 @@
+import { Link } from "react-router-dom";
+
 import {
   Lock,
   ShieldCheck,
   Truck,
 } from "lucide-react";
+
+
 
 function OrderSummary({ items }) {
   const subtotal = items.reduce(
@@ -74,9 +78,17 @@ function OrderSummary({ items }) {
           </span>
         </div>
 
-        <button className="w-full py-5 bg-black text-white text-sm font-semibold uppercase tracking-[4px] hover:bg-neutral-800 transition">
-          Proceed To Checkout
-        </button>
+        
+
+
+
+<Link
+  to="/checkout"
+  className="block w-full py-5 bg-black text-white text-sm font-semibold uppercase tracking-[4px] hover:bg-neutral-800 transition text-center"
+>
+  Proceed To Checkout
+</Link>
+
 
         <div className="mt-8 flex justify-center gap-6 text-black/40">
           <ShieldCheck size={20} />

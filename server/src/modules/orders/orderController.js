@@ -3,7 +3,11 @@ import Cart from "../cart/cartModel.js";
 
 export const createOrder = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const {
+      userId,
+      shippingAddress,
+      paymentMethod,
+    } = req.body;
 
     const cart = await Cart.findOne({
       userId,
@@ -34,17 +38,26 @@ export const createOrder = async (req, res) => {
       userId,
       items,
       totalAmount,
+      shippingAddress,
+      paymentMethod,
+      paymentStatus:
+        paymentMethod === "COD"
+          ? "Pending"
+          : "Pending",
     });
 
-    // Clear cart after order placed
+    // Clear cart after successful order
     cart.items = [];
     await cart.save();
 
     res.status(201).json({
       success: true,
+      message: "Order placed successfully",
       order,
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -56,7 +69,8 @@ export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("userId", "name email")
-      .populate("items.productId");
+      .populate("items.productId")
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,
@@ -70,7 +84,10 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
-export const getUserOrders = async (req, res) => {
+export const getUserOrders = async (
+  req,
+  res
+) => {
   try {
     const { userId } = req.params;
 
@@ -92,7 +109,6 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
-
 export const updateOrderStatus = async (
   req,
   res
@@ -108,8 +124,17 @@ export const updateOrderStatus = async (
         { new: true }
       );
 
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
     res.json({
       success: true,
+      message:
+        "Order status updated successfully",
       order,
     });
   } catch (error) {

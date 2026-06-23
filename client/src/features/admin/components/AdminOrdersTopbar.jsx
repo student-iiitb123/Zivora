@@ -1,33 +1,48 @@
-import { Menu, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
-function AdminOrdersTopbar() {
+import AdminLayout from "../components/AdminLayout";
+import AdminOrdersTopbar from "../components/AdminOrdersTopbar";
+import AdminOrdersStats from "../components/AdminOrdersStats";
+import AdminOrdersFilters from "../components/AdminOrdersFilters";
+import AdminOrdersTable from "../components/AdminOrdersTable";
+import AdminMobileNav from "../components/AdminMobileNav";
+
+import { getAllOrders } from "../../../services/orderService";
+
+function AdminOrdersPage() {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const res = await getAllOrders();
+
+      console.log("Orders:", res.data);
+
+      setOrders(res.data.orders || []);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <header className="w-full h-16 sticky top-0 bg-white/80 backdrop-blur-xl border-b border-black/10 shadow-sm flex items-center justify-between px-5 md:px-16 z-40">
-      <div className="flex items-center gap-4">
-        <Menu size={22} className="md:hidden" />
+    <AdminLayout>
+      <AdminOrdersTopbar />
 
-        <h1 className="text-2xl font-bold tracking-tight">
-          Orders
-        </h1>
+      <div className="px-5 md:px-16 py-8 max-w-[1440px] mx-auto">
+        <AdminOrdersStats orders={orders} />
+
+        <AdminOrdersFilters />
+
+        <AdminOrdersTable orders={orders} />
       </div>
 
-      <div className="flex items-center gap-6">
-        <div className="hidden md:flex items-center bg-neutral-100 rounded-full px-4 py-2 border border-black/10">
-          <Search size={16} className="text-black/50" />
-
-          <input
-            className="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-black/40"
-            placeholder="Search orders..."
-            type="text"
-          />
-        </div>
-
-        <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-bold">
-          AV
-        </div>
-      </div>
-    </header>
+      <AdminMobileNav />
+    </AdminLayout>
   );
 }
 
-export default AdminOrdersTopbar;
+export default AdminOrdersPage;
