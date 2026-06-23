@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://zivora-262a.onrender.com/",
+    origin: "https://zivora-frontend.onrender.com/",
     credentials: true,
   })
 );
