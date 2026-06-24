@@ -7,8 +7,9 @@ function FloatingInput({
   type = "text",
   required = false,
   showVisibility = false,
-  value,
+  value = "",
   onChange,
+  error = false,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -16,7 +17,7 @@ function FloatingInput({
     showVisibility && showPassword ? "text" : type;
 
   return (
-    <div className="relative">
+    <div className="relative pt-4">
       <input
         id={id}
         name={id}
@@ -25,36 +26,46 @@ function FloatingInput({
         value={value}
         onChange={onChange}
         placeholder=" "
-        className="
+        className={`
           peer
           w-full
           bg-transparent
           border-0
           border-b
-          border-black/20
-          py-3
+          py-4
           px-0
           pr-10
           text-black
-          focus:border-black
-          focus:ring-0
           outline-none
-          transition-colors
-        "
+          transition-all
+          ${
+            error
+              ? "border-red-500"
+              : "border-black/20 focus:border-black"
+          }
+        `}
       />
 
       <label
         htmlFor={id}
         className="
-          absolute left-0 top-3
-          text-black/50 uppercase tracking-[2px] text-sm
-          pointer-events-none transition-all duration-200
-          peer-placeholder-shown:top-3
-          peer-placeholder-shown:text-sm
-          peer-focus:-top-3
+          absolute
+          left-0
+          top-8
+          text-black/50
+          uppercase
+          tracking-[2px]
+          text-sm
+          pointer-events-none
+          transition-all
+          duration-200
+
+          peer-focus:top-0
           peer-focus:text-xs
-          peer-not-placeholder-shown:-top-3
-          peer-not-placeholder-shown:text-xs
+          peer-focus:text-black
+
+          peer-[:not(:placeholder-shown)]:top-0
+          peer-[:not(:placeholder-shown)]:text-xs
         "
       >
         {label}
@@ -64,10 +75,20 @@ function FloatingInput({
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-0 top-3 text-black/40 hover:text-black transition"
+          className="absolute right-0 top-8 text-black/40 hover:text-black"
         >
-          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          {showPassword ? (
+            <EyeOff size={18} />
+          ) : (
+            <Eye size={18} />
+          )}
         </button>
+      )}
+
+      {error && (
+        <p className="mt-1 text-xs text-red-500">
+          This field is required
+        </p>
       )}
     </div>
   );

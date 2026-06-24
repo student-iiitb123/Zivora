@@ -5,25 +5,43 @@ function FloatingInput({
   type = "text",
 }) {
   return (
-    <div className="relative">
+    <div className="relative pt-6">
       <input
         type={type}
         value={value}
         onChange={onChange}
         placeholder=" "
-        className="peer w-full border-0 border-b border-black/20 bg-transparent py-3 focus:ring-0 focus:border-black outline-none"
+        className="
+          peer
+          w-full
+          border-0
+          border-b
+          border-black/20
+          bg-transparent
+          pt-4
+          pb-2
+          focus:ring-0
+          focus:border-black
+          outline-none
+        "
       />
 
       <label
         className="
-          absolute left-0 top-3 transition-all
-          peer-focus:-translate-y-5
-          peer-focus:scale-90
+          absolute
+          left-0
+          top-10
+          text-black/50
+          transition-all
+          duration-200
+          pointer-events-none
+
+          peer-focus:top-0
+          peer-focus:text-xs
           peer-focus:text-black
-          peer-placeholder-shown:translate-y-0
-          peer-placeholder-shown:scale-100
-          peer-not-placeholder-shown:-translate-y-5
-          peer-not-placeholder-shown:scale-90
+
+          peer-[&:not(:placeholder-shown)]:top-0
+          peer-[&:not(:placeholder-shown)]:text-xs
         "
       >
         {label}
