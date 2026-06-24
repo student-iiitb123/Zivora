@@ -11,6 +11,8 @@ import { getAllOrders } from "../../../services/orderService";
 
 function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -18,11 +20,15 @@ function AdminOrdersPage() {
 
   const fetchOrders = async () => {
     try {
+      setLoading(true);
+      setError(null);
       const res = await getAllOrders();
-
       setOrders(res.data.orders || []);
     } catch (error) {
+      setError("Could not load orders. The server may be waking up — try again in a moment.");
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,7 +41,25 @@ function AdminOrdersPage() {
 
         <AdminOrdersFilters />
 
-        <AdminOrdersTable orders={orders} />
+        {loading ? (
+          <div className="bg-white border rounded-xl py-24 text-center mt-8">
+            <p className="text-black/50 uppercase tracking-[3px] text-xs animate-pulse">
+              Loading orders...
+            </p>
+          </div>
+        ) : error ? (
+          <div className="bg-white border rounded-xl py-24 text-center mt-8">
+            <p className="text-red-400 text-sm">{error}</p>
+            <button
+              onClick={fetchOrders}
+              className="mt-4 text-xs uppercase tracking-[2px] border border-black/20 px-4 py-2 hover:border-black transition"
+            >
+              Retry
+            </button>
+          </div>
+        ) : (
+          <AdminOrdersTable orders={orders} />
+        )}
       </div>
 
       <AdminMobileNav />
