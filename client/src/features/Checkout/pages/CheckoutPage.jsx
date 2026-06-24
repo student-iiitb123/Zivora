@@ -29,7 +29,7 @@ function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("COD");
    const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
-
+ const [errorMessage, setErrorMessage] = useState("");
 
 useEffect(() => {
   fetchCart();
@@ -51,42 +51,63 @@ const fetchCart = async () => {
   }
 };
   const handlePlaceOrder = async () => {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
+    setErrorMessage("");
 
-      const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
 
-      if (!user?._id) {
-        alert("Please login first");
-        return;
-      }
-
-      const payload = {
-        userId: user._id,
-        shippingAddress,
-        paymentMethod,
-      };
-
-      console.log("Sending Order:", payload);
-
-      const res = await placeOrder(payload);
-
-      console.log("Order Response:", res.data);
-
-      if (res.data.success) {
-        navigate(`/order-success/${res.data.order._id}`);
-      }
-    } catch (error) {
-      console.log(error);
-
-      alert(
-        error?.response?.data?.message ||
-          "Failed to place order"
-      );
-    } finally {
-      setLoading(false);
+    if (!user?._id) {
+      setErrorMessage("Please login first.");
+      return;
     }
-  };
+
+    const {
+      fullName,
+      email,
+      phone,
+      address,
+      city,
+      state,
+      pincode,
+    } = shippingAddress;
+
+    if (
+      !fullName.trim() ||
+      !email.trim() ||
+      !phone.trim() ||
+      !address.trim() ||
+      !city.trim() ||
+      !state.trim() ||
+      !pincode.trim()
+    ) {
+      setErrorMessage(
+        "Please fill all shipping details before placing your order."
+      );
+      return;
+    }
+
+    const payload = {
+      userId: user._id,
+      shippingAddress,
+      paymentMethod,
+    };
+
+    const res = await placeOrder(payload);
+
+    if (res.data.success) {
+      navigate(`/order-success/${res.data.order._id}`);
+    }
+  } catch (error) {
+    console.log(error);
+
+    setErrorMessage(
+      "Unable to place order. Please check your shipping information and try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>

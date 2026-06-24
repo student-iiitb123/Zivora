@@ -3,12 +3,20 @@ import FloatingInput from "./FloatingInput";
 function ShippingForm({
   shippingAddress,
   setShippingAddress,
+  errorMessage,
 }) {
   const handleChange = (field, value) => {
     setShippingAddress({
       ...shippingAddress,
       [field]: value,
     });
+  };
+
+  const hasError = (field) => {
+    return (
+      errorMessage &&
+      !shippingAddress[field]?.trim()
+    );
   };
 
   return (
@@ -31,6 +39,7 @@ function ShippingForm({
           onChange={(e) =>
             handleChange("fullName", e.target.value)
           }
+          error={hasError("fullName")}
         />
 
         <FloatingInput
@@ -39,6 +48,7 @@ function ShippingForm({
           onChange={(e) =>
             handleChange("phone", e.target.value)
           }
+          error={hasError("phone")}
         />
 
         <div className="md:col-span-2">
@@ -48,6 +58,7 @@ function ShippingForm({
             onChange={(e) =>
               handleChange("email", e.target.value)
             }
+            error={hasError("email")}
           />
         </div>
 
@@ -58,6 +69,7 @@ function ShippingForm({
             onChange={(e) =>
               handleChange("address", e.target.value)
             }
+            error={hasError("address")}
           />
         </div>
 
@@ -67,6 +79,7 @@ function ShippingForm({
           onChange={(e) =>
             handleChange("city", e.target.value)
           }
+          error={hasError("city")}
         />
 
         <FloatingInput
@@ -75,6 +88,7 @@ function ShippingForm({
           onChange={(e) =>
             handleChange("state", e.target.value)
           }
+          error={hasError("state")}
         />
 
         <FloatingInput
@@ -83,6 +97,7 @@ function ShippingForm({
           onChange={(e) =>
             handleChange("pincode", e.target.value)
           }
+          error={hasError("pincode")}
         />
 
       </div>
