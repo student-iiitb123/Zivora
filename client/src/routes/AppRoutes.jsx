@@ -12,22 +12,17 @@ import ProfilePage from "../features/profile/pages/ProfilePage";
 import OrdersPage from "../features/orders/pages/OrdersPage";
 import AdminInventoryPage from "../features/admin/pages/AdminInventoryPage";
 import OrderSuccessPage from "../features/orders/pages/OrderSuccessPage";
-import NewArrivalPage from "../pages/NewArrival";
-import CollectionPage from "../pages/CollectionPage";
-// Admin Page
-
 import AdminDashboardPage from "../features/admin/pages/AdminDashboardPage";
 import AdminOrdersPage from "../features/admin/pages/AdminOrdersPage";
 import AdminAddProductPage from "../features/admin/pages/AdminAddProductPage";
 import AdminLoginPage from "../features/admin/components/AdminLoginPage";
 import AdminCustomersPage from "../features/admin/pages/AdminCustomerPage";
 import SettingsPage from "../features/admin/pages/SettingPage";
+
 function AppRoutes() {
   return (
     <Routes>
-
       {/* User Routes */}
-
       <Route path="/" element={<ZivoraHome />} />
       <Route path="/products" element={<ProductListPage />} />
       <Route path="/products/:id" element={<ProductDetailPage />} />
@@ -38,25 +33,16 @@ function AppRoutes() {
       <Route path="/wishlist" element={<WishlistPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/orders" element={<OrdersPage />} />
-      <Route
-  path="/order-success/:orderId"
-  element={<OrderSuccessPage />}
+      <Route path="/order-success/:orderId" element={<OrderSuccessPage />} />
 
-/>
- <Route path="/new-arrivals" element={<NewArrivalPage />} />
- <Route path="/collections" element={<CollectionPage />} />
-     
-      {/* Admin Dashboard Route */}
-
+      {/* Admin Routes */}
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
       <Route path="/admin/inventory" element={<AdminInventoryPage />} />
       <Route path="/admin/orders" element={<AdminOrdersPage />} />
       <Route path="/admin/products/new" element={<AdminAddProductPage />} />
-      <Route path="/admin/login" element={<AdminLoginPage />} /> 
-     <Route path="/admin/customers" element={<AdminCustomersPage />} />
-    <Route path="/admin/settings" element={<SettingsPage />} />
-  
-
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin/customers" element={<AdminCustomersPage />} />
+      <Route path="/admin/settings" element={<SettingsPage />} />
     </Routes>
   );
 }

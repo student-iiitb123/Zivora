@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-
 import AdminLayout from "../components/AdminLayout";
 import AdminOrdersTopbar from "../components/AdminOrdersTopbar";
 import AdminOrdersStats from "../components/AdminOrdersStats";
 import AdminOrdersFilters from "../components/AdminOrdersFilters";
 import AdminOrdersTable from "../components/AdminOrdersTable";
 import AdminMobileNav from "../components/AdminMobileNav";
-
 import { getAllOrders } from "../../../services/orderService";
 
 function AdminOrdersPage() {
@@ -25,7 +23,7 @@ function AdminOrdersPage() {
       const res = await getAllOrders();
       setOrders(res.data.orders || []);
     } catch (error) {
-      setError("Could not load orders. The server may be waking up — try again in a moment.");
+      setError("Could not load orders. The server may be waking up — try again.");
       console.log(error);
     } finally {
       setLoading(false);
@@ -35,10 +33,8 @@ function AdminOrdersPage() {
   return (
     <AdminLayout>
       <AdminOrdersTopbar />
-
       <div className="px-5 md:px-16 py-8 max-w-[1440px] mx-auto">
         <AdminOrdersStats orders={orders} />
-
         <AdminOrdersFilters />
 
         {loading ? (
@@ -61,7 +57,6 @@ function AdminOrdersPage() {
           <AdminOrdersTable orders={orders} />
         )}
       </div>
-
       <AdminMobileNav />
     </AdminLayout>
   );

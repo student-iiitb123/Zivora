@@ -7,11 +7,9 @@ function AdminAddProductPage() {
   return (
     <AdminLayout>
       <AddProductTopbar />
-
       <div className="max-w-[1440px] mx-auto px-5 md:px-16 py-12">
         <AddProductForm />
       </div>
-
       <AdminMobileNav />
     </AdminLayout>
   );
