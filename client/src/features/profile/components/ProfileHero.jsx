@@ -1,7 +1,7 @@
 import ProfileCompletion from "./ProfileCompletion";
 import { BadgeCheck } from "lucide-react";
 
-function ProfileHero() {
+function ProfileHero({ user }) {
   return (
     <section className="px-5 pt-8 pb-12">
       <div className="flex flex-col gap-6">
@@ -10,7 +10,7 @@ function ProfileHero() {
             <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-black p-1">
               <img
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU60H7H-aGJoQbxBgQcKr8eCQcnWL3Nr2xl2OMHlK1Re_AKOSJK5MUepVT9_Up40VOOr3HE9WVs6wFNHTeC0jD795nwNmz69sJymc1zR42QHYZjfPDoNkhlfCvjEbfkYAdrw8mTXYbtpoAP6CMhqInyShnEL3TXLZ4h7sLxS8CcZRK4lTjmbFEmiK023ajjOJVIayHb-cRYvDhpehXtHMR9NP3rNqpj5c4hJbwCa0mOD9zqOp1Ql6fohzBAr4h7mnoQsDFXVVD"
-                alt="Alexander Vane"
+                alt="Profile"
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -22,8 +22,12 @@ function ProfileHero() {
 
           <div>
             <h2 className="text-4xl font-semibold leading-tight">
-              Alexander Vane
+              {user?.name || "Guest User"}
             </h2>
+
+            <p className="text-sm text-black/60 mt-1">
+              {user?.email}
+            </p>
 
             <span className="inline-flex mt-2 bg-black text-white px-3 py-1 text-[10px] uppercase tracking-[3px] rounded-full">
               Platinum Member

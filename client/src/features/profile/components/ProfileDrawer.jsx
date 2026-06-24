@@ -6,8 +6,9 @@ import {
   Crown,
   X,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
-function ProfileDrawer({ open, onClose }) {
+function ProfileDrawer({ open, onClose, user }) {
   return (
     <>
       <div
@@ -31,28 +32,55 @@ function ProfileDrawer({ open, onClose }) {
             <div className="w-16 h-16 rounded-full overflow-hidden bg-neutral-200 mb-4">
               <img
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuArWJ7sFfTwpoq073Jli5vaYA8RgdVKKqqgBw0to1eocIq799lqa65c86N6XZ_PIB5Qfrvm__Md2ZaaB6EZJtkyjnLM-qIVCyYQq1HaGHX5UOh9cWtFTUoA4gfytboQq6FzLQjwGKZMhk7IAEUBWVzhBEW_p4gZFVJLnyo7F2WBbHi9eOvLp_krWgdvs2bgkqEjNYCjEcJUCAYHuSl12QJ5Y5aNhwVIXW9CiXNWU9_0I64ci8vCDxNLia3jnzWp6C16k4EcUnbb"
-                alt="User profile"
+                alt="Profile"
                 className="w-full h-full object-cover"
               />
             </div>
 
-            <h2 className="text-2xl font-semibold">Alexander Vane</h2>
+            <h2 className="text-2xl font-semibold">
+              {user?.name || "Guest User"}
+            </h2>
 
-            <p className="text-xs uppercase tracking-[3px] text-black/50 mt-1">
-              Platinum Member
+            <p className="text-sm text-black/60 mt-1">
+              {user?.email}
             </p>
 
-            <p className="text-[10px] uppercase tracking-[3px] text-black/40 mt-1">
-              Member since 2022
+            <p className="text-xs uppercase tracking-[3px] text-black/50 mt-2">
+              Platinum Member
             </p>
           </div>
 
           <nav className="space-y-1">
-            <DrawerLink active icon={<LayoutDashboard size={20} />} label="Dashboard" />
-            <DrawerLink icon={<Package size={20} />} label="Orders" />
-            <DrawerLink icon={<Crown size={20} />} label="Membership" />
-            <DrawerLink icon={<ShieldCheck size={20} />} label="Security" />
-            <DrawerLink icon={<Settings size={20} />} label="Settings" />
+            <DrawerLink
+              to="/profile"
+              active
+              icon={<LayoutDashboard size={20} />}
+              label="Dashboard"
+            />
+
+            <DrawerLink
+              to="/orders"
+              icon={<Package size={20} />}
+              label="Orders"
+            />
+
+            <DrawerLink
+              to="/membership"
+              icon={<Crown size={20} />}
+              label="Membership"
+            />
+
+            <DrawerLink
+              to="/security"
+              icon={<ShieldCheck size={20} />}
+              label="Security"
+            />
+
+            <DrawerLink
+              to="/settings"
+              icon={<Settings size={20} />}
+              label="Settings"
+            />
           </nav>
         </div>
       </aside>
@@ -60,10 +88,10 @@ function ProfileDrawer({ open, onClose }) {
   );
 }
 
-function DrawerLink({ icon, label, active }) {
+function DrawerLink({ to, icon, label, active }) {
   return (
-    <a
-      href="#"
+    <Link
+      to={to}
       className={`flex items-center gap-4 px-4 py-4 text-sm uppercase tracking-[3px] transition ${
         active
           ? "bg-black text-white"
@@ -72,7 +100,7 @@ function DrawerLink({ icon, label, active }) {
     >
       {icon}
       {label}
-    </a>
+    </Link>
   );
 }
 
