@@ -8,8 +8,5 @@ export const placeOrder = (data) =>
 export const getUserOrders = (userId) =>
   axios.get(`${API}/user/${userId}`);
 
-export const getAllOrders = () => {
-  return axios.get("https://zivora-262a.onrender.com/api/orders/admin", {
-    timeout: 15000, // fail after 15s instead of hanging forever
-  });
-};
+export const getAllOrders = () =>
+  axios.get(`${API}/`, { timeout: 15000 });
