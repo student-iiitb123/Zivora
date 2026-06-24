@@ -14,10 +14,7 @@ function ProfileDrawer({ open, onClose, user }) {
 
   const handleLogout = () => {
     localStorage.clear();
-
     navigate("/login", { replace: true });
-
-    window.location.reload();
   };
 
   return (
@@ -69,25 +66,21 @@ function ProfileDrawer({ open, onClose, user }) {
                 icon={<LayoutDashboard size={20} />}
                 label="Dashboard"
               />
-
               <DrawerLink
                 to="/orders"
                 icon={<Package size={20} />}
                 label="Orders"
               />
-
               <DrawerLink
                 to="/membership"
                 icon={<Crown size={20} />}
                 label="Membership"
               />
-
               <DrawerLink
                 to="/security"
                 icon={<ShieldCheck size={20} />}
                 label="Security"
               />
-
               <DrawerLink
                 to="/settings"
                 icon={<Settings size={20} />}
@@ -96,26 +89,10 @@ function ProfileDrawer({ open, onClose, user }) {
             </nav>
           </div>
 
-          {/* Logout Button */}
           <div className="mt-auto pt-6 border-t">
             <button
               onClick={handleLogout}
-              className="
-                w-full
-                flex
-                items-center
-                justify-center
-                gap-3
-                py-3
-                bg-red-500
-                text-white
-                rounded-lg
-                hover:bg-red-600
-                transition
-                uppercase
-                tracking-[2px]
-                text-sm
-              "
+              className="w-full flex items-center justify-center gap-3 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition uppercase tracking-[2px] text-sm"
             >
               <LogOut size={18} />
               Logout
