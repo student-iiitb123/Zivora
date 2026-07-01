@@ -20,6 +20,7 @@ import AdminCustomersPage from "../features/admin/pages/AdminCustomerPage";
 import SettingsPage from "../features/admin/pages/SettingPage";
 import NewArrivalPage from "../pages/NewArrival";
 import DropSalesPage from "../pages/Sales";
+import CollectionPage from "../pages/CollectionPage";
 
 function AppRoutes() {
   return (
@@ -38,6 +39,7 @@ function AppRoutes() {
       <Route path="/order-success/:orderId" element={<OrderSuccessPage />} />
       <Route path="/new-arrivals" element={<NewArrivalPage />} />
       <Route path="/sale" element={<DropSalesPage />} />
+      <Route path="/collection" element= {<CollectionPage />} />
 
       {/* Admin Routes */}
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />

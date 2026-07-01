@@ -57,7 +57,7 @@ const NAV_LINKS = [
   { label: "WOMEN", mega: "Women" },
   { label: "OVERSIZED", href: "/products?fit=Oversized" },
   { label: "SHIRTS", href: "/products?type=Shirts" },
-  { label: "SUMMER EDIT", href: "/collections?tag=summer-edit" },
+  { label: "SUMMER EDIT", href: "/collection" },
   { label: "SALE", href: "/sale", accent: true },
 ];
 
