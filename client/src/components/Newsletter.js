@@ -34,7 +34,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-black py-16 sm:py-24 lg:py-32">
+    <section className="relative overflow-hidden bg-[#0B0B0C] py-16 sm:py-24 lg:py-32">
       {/* Subtle Grid Background */}
       <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
