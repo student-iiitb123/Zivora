@@ -77,7 +77,7 @@ useEffect(() => {
         <Hero />
         <FeaturedCategories />
         <BestSellers />
-        <Editorial />
+        {/* <Editorial /> */}
         <NewArrivals />
         <Testimonials />
         <Newsletter />
