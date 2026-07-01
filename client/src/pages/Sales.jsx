@@ -11,6 +11,8 @@ import {
   Truck,
   Zap,
 } from "lucide-react";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 /* ------------------------------------------------------------------ */
 /* DATA — swap this out for your real drop                            */
@@ -182,7 +184,8 @@ export default function DropSalesPage() {
   return (
     <div className="bg-[#0B0B0C] text-[#EDEAE0] min-h-screen font-[system-ui]">
       {/* ---------------- NAV ---------------- */}
-      <header className="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-[#0B0B0C]/85 backdrop-blur-md">
+      <Navbar />
+      {/* <header className="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-[#0B0B0C]/85 backdrop-blur-md">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="font-mono text-sm tracking-[5px] font-bold">ZIVORA</span>
@@ -229,7 +232,7 @@ export default function DropSalesPage() {
             </a>
           </div>
         )}
-      </header>
+      </header> */}
 
       {/* ---------------- HERO ---------------- */}
       <section className="relative pt-40 pb-24 overflow-hidden border-b border-white/10">
@@ -500,24 +503,7 @@ export default function DropSalesPage() {
       </section>
 
       {/* ---------------- FOOTER ---------------- */}
-      <footer className="border-t border-white/10">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 py-10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <span className="font-mono text-xs tracking-[4px] text-white/40">
-            ZIVORA © {new Date().getFullYear()}
-          </span>
-          <div className="flex gap-6 font-mono text-xs uppercase tracking-[3px] text-white/40">
-            <a href="#" className="hover:text-white transition-colors">
-              Instagram
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              TikTok
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Support
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <style>{`
         .ticker {
