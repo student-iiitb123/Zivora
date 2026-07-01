@@ -54,7 +54,7 @@ export default function Hero() {
       {/* Background */}
       <div className="absolute inset-0">
         <img
-          src="./assets/models.png"
+          src="./assets/anshu.png"
           alt="Katchy Collection"
           className="w-full h-full object-cover hero-kenburns"
         />
