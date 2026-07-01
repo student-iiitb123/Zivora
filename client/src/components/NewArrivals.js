@@ -88,7 +88,7 @@ export default function NewArrivals() {
   const [headerRef, headerInView] = useInView();
 
   return (
-    <section className="relative py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
+    <section className="relative py-16 sm:py-24 lg:py-32 bg-[#0B0B0C] overflow-hidden">
       {/* floating decorative sparkles */}
       <div className="pointer-events-none absolute inset-0 hidden md:block">
         {[
@@ -100,11 +100,14 @@ export default function NewArrivals() {
           <Sparkles
             key={i}
             size={s.size}
-            className="absolute text-[#C6FF3A]/30 float-sparkle"
+            className="absolute text-[#C6FF3A]/25 float-sparkle"
             style={{ top: s.top, left: s.left, animationDelay: s.delay, animationDuration: s.dur }}
           />
         ))}
       </div>
+
+      {/* ambient glow */}
+      <div className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[520px] h-[520px] bg-[#C6FF3A]/10 rounded-full blur-[150px]" />
 
       <div className="relative max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
         {/* HEADING */}
@@ -114,7 +117,7 @@ export default function NewArrivals() {
             headerInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <span className="inline-flex items-center gap-2 text-[11px] sm:text-xs tracking-[4px] uppercase text-black/50 font-mono mb-4">
+          <span className="inline-flex items-center gap-2 text-[11px] sm:text-xs tracking-[4px] uppercase text-white/50 font-mono mb-4">
             <Sparkles size={14} strokeWidth={2} className="text-[#C6FF3A] animate-pulse" />
             Fresh Drops
           </span>
@@ -126,11 +129,11 @@ export default function NewArrivals() {
           {/* PILL FILTERS with sliding highlight */}
           <div
             ref={pillsWrapRef}
-            className="relative inline-flex gap-2 sm:gap-3 flex-wrap justify-center bg-neutral-50 border border-black/10 rounded-full p-1.5"
+            className="relative inline-flex gap-2 sm:gap-3 flex-wrap justify-center bg-white/[0.04] border border-white/10 rounded-full p-1.5"
           >
             {/* sliding highlight */}
             <span
-              className="absolute top-1.5 bottom-1.5 rounded-full bg-black transition-all duration-350 ease-[cubic-bezier(0.65,0,0.35,1)]"
+              className="absolute top-1.5 bottom-1.5 rounded-full bg-[#C6FF3A] transition-all duration-350 ease-[cubic-bezier(0.65,0,0.35,1)]"
               style={{ left: pillStyle.left, width: pillStyle.width }}
             />
             {CATEGORIES.map((category) => (
@@ -140,8 +143,8 @@ export default function NewArrivals() {
                 onClick={() => setActiveCategory(category)}
                 className={`relative z-10 text-xs sm:text-sm font-semibold uppercase tracking-widest px-5 sm:px-6 py-2.5 rounded-full transition-colors duration-300 ${
                   activeCategory === category
-                    ? "text-white"
-                    : "text-black/50 hover:text-black"
+                    ? "text-black"
+                    : "text-white/50 hover:text-white"
                 }`}
               >
                 {category}
@@ -157,9 +160,9 @@ export default function NewArrivals() {
               .fill(0)
               .map((_, i) => (
                 <div key={i} className={i % 2 !== 0 ? "md:mt-12" : ""}>
-                  <div className="aspect-[4/5] mb-4 rounded-2xl bg-neutral-100 skeleton-shimmer" />
-                  <div className="h-3 w-3/4 mb-2 rounded-full bg-neutral-100 skeleton-shimmer" />
-                  <div className="h-3 w-1/3 rounded-full bg-neutral-100 skeleton-shimmer" />
+                  <div className="aspect-[4/5] mb-4 rounded-2xl bg-white/[0.05] skeleton-shimmer" />
+                  <div className="h-3 w-3/4 mb-2 rounded-full bg-white/[0.05] skeleton-shimmer" />
+                  <div className="h-3 w-1/3 rounded-full bg-white/[0.05] skeleton-shimmer" />
                 </div>
               ))}
           </div>
@@ -177,7 +180,7 @@ export default function NewArrivals() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-24 sm:py-28 px-6 rounded-3xl bg-[#0A0A0A] text-center">
+          <div className="flex flex-col items-center justify-center py-24 sm:py-28 px-6 rounded-3xl bg-white/[0.03] border border-white/10 text-center">
             <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mb-8 animate-pulse">
               <Sparkles size={36} strokeWidth={1.6} className="text-[#C6FF3A]" />
             </div>
@@ -206,9 +209,9 @@ export default function NewArrivals() {
       </div>
 
       <style>{`
-        /* gradient shimmer heading */
+        /* gradient shimmer heading — light sweep on dark bg */
         .gradient-shimmer {
-          background: linear-gradient(90deg, #000 0%, #000 40%, #C6FF3A 50%, #000 60%, #000 100%);
+          background: linear-gradient(90deg, #fff 0%, #fff 40%, #C6FF3A 50%, #fff 60%, #fff 100%);
           background-size: 250% 100%;
           -webkit-background-clip: text;
           background-clip: text;
@@ -241,7 +244,7 @@ export default function NewArrivals() {
           position: absolute;
           inset: 0;
           transform: translateX(-100%);
-          background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent);
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
           animation: shimmer-sweep 1.4s infinite;
         }
         @keyframes shimmer-sweep {
@@ -312,7 +315,7 @@ function ProductCard({ product, index, liked, onToggleLike, onClick }) {
       }`}
       style={{ transitionDelay: inView ? `${(index % 8) * 70}ms` : "0ms" }}
     >
-      <div className="relative aspect-[4/5] overflow-hidden mb-4 bg-neutral-100 rounded-2xl">
+      <div className="relative aspect-[4/5] overflow-hidden mb-4 bg-white/[0.05] rounded-2xl border border-white/[0.06]">
         <img
           src={product.media?.[0]?.url || "https://via.placeholder.com/600x750"}
           alt={product.product_name}
@@ -345,30 +348,30 @@ function ProductCard({ product, index, liked, onToggleLike, onClick }) {
             onToggleLike();
           }}
           aria-label="Toggle wishlist"
-          className={`absolute top-3 right-3 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-300 ${
+          className={`absolute top-3 right-3 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 ${
             liked
-              ? "bg-black scale-100"
-              : "bg-white/90 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
+              ? "bg-[#C6FF3A] scale-100"
+              : "bg-black/40 border border-white/20 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100"
           }`}
         >
           <Heart
             size={15}
             strokeWidth={2}
             className={`transition-transform duration-300 ${liked ? "scale-110" : ""} ${
-              liked ? "text-[#C6FF3A] fill-[#C6FF3A]" : "text-black"
+              liked ? "text-black fill-black" : "text-white"
             }`}
           />
         </button>
 
         {/* bottom gradient on hover */}
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      <h5 className="text-xs sm:text-sm font-semibold text-black uppercase tracking-wide mb-1 transition-colors group-hover:text-black/70">
+      <h5 className="text-xs sm:text-sm font-semibold text-white uppercase tracking-wide mb-1 transition-colors group-hover:text-white/70">
         {product.product_name}
       </h5>
 
-      <p className="text-xs sm:text-sm text-black/60 font-medium">
+      <p className="text-xs sm:text-sm text-white/50 font-medium">
         ₹{product.sale_price}
       </p>
     </div>
