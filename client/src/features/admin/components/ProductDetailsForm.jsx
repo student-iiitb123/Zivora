@@ -53,6 +53,9 @@ function ProductDetailsForm({ formData, setFormData }) {
             <option>Men</option>
             <option>Women</option>
             <option>Accessories</option>
+            <option>Oversized</option>
+            <option>t-shirt</option>
+
           </select>
         </div>
 

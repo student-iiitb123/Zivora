@@ -153,9 +153,37 @@ export default function Navbar() {
   return (
     <>
       {/* ANNOUNCEMENT BAR */}
-      <div className="bg-black text-[#D4AF6A] text-center text-[11px] tracking-[2px] uppercase py-2 px-4">
-        Free shipping on orders above ₹999
-      </div>
+  <div className="relative overflow-hidden bg-black text-[#D4AF6A] py-2">
+  <div className="announcement-marquee flex gap-12 whitespace-nowrap text-[11px] tracking-[2px] uppercase">
+    {Array(8) // more repeats = never runs out, whatever the screen width
+      .fill([
+        "Free shipping on orders above ₹999",
+        "New drops every week",
+        "Easy 7-day returns",
+      ])
+      .flat()
+      .map((text, i) => (
+        <span key={i} className="flex items-center gap-12 shrink-0">
+          {text}
+          <span className="text-[#D4AF6A]/40">•</span>
+        </span>
+      ))}
+  </div>
+
+  <style>{`
+    .announcement-marquee {
+      width: max-content;
+      animation: announcement-scroll 25s linear infinite;
+    }
+    @keyframes announcement-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-12.5%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .announcement-marquee { animation: none; }
+    }
+  `}</style>
+</div>
 
       <header
         id="main-nav"

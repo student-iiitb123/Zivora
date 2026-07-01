@@ -18,6 +18,7 @@ import AdminAddProductPage from "../features/admin/pages/AdminAddProductPage";
 import AdminLoginPage from "../features/admin/components/AdminLoginPage";
 import AdminCustomersPage from "../features/admin/pages/AdminCustomerPage";
 import SettingsPage from "../features/admin/pages/SettingPage";
+import NewArrivalPage from "../pages/NewArrival";
 
 function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ function AppRoutes() {
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/orders" element={<OrdersPage />} />
       <Route path="/order-success/:orderId" element={<OrderSuccessPage />} />
+      <Route path="/new-arrivals" element={<NewArrivalPage />} />
 
       {/* Admin Routes */}
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
