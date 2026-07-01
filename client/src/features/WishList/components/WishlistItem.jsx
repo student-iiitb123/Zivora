@@ -1,39 +1,118 @@
-import { X } from "lucide-react";
+import { X, ShoppingBag, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function WishlistItem({ item }) {
+  const navigate = useNavigate();
+
+  const mrp = item.mrp || item.price;
+  const salePrice = item.salePrice || item.price;
+
+  const discount =
+    mrp > salePrice
+      ? Math.round(((mrp - salePrice) / mrp) * 100)
+      : 0;
+
   return (
-    <div className="group">
-      <div className="aspect-[3/4] overflow-hidden relative mb-6">
+    <div
+      onClick={() => navigate(`/product/${item._id || item.id}`)}
+      className="group cursor-pointer"
+    >
+      {/* IMAGE */}
+      <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-[#111] border border-white/10">
+
         <img
           src={item.image}
           alt={item.name}
-          className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
         />
 
-        <button className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center">
-          <X size={18} />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+
+        {/* Discount Badge */}
+        {discount > 0 && (
+          <span className="absolute top-4 left-4 bg-[#C6FF3A] text-black text-[10px] uppercase tracking-[2px] px-3 py-1 rounded-full font-semibold">
+            {discount}% OFF
+          </span>
+        )}
+
+        {/* Remove Button */}
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/70 backdrop-blur border border-white/10 flex items-center justify-center transition hover:bg-red-500 hover:border-red-500"
+        >
+          <X size={18} className="text-white" />
+        </button>
+
+        {/* Stock Badge */}
+        <span className="absolute bottom-20 left-4 bg-white/10 backdrop-blur px-3 py-1 rounded-full text-[10px] uppercase tracking-[2px] text-white">
+          In Stock
+        </span>
+
+        {/* Add to Bag */}
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="absolute bottom-4 left-4 right-4 py-3 rounded-full bg-white text-black font-semibold uppercase tracking-[3px]
+          flex items-center justify-center gap-2
+          opacity-0 translate-y-4
+          group-hover:opacity-100
+          group-hover:translate-y-0
+          transition-all duration-300
+          hover:bg-[#C6FF3A]"
+        >
+          <ShoppingBag size={16} />
+          Add To Bag
         </button>
       </div>
 
-      <div className="flex justify-between mb-6">
-        <div>
-          <h3 className="text-xl font-semibold">
-            {item.name}
-          </h3>
+      {/* DETAILS */}
+      <div className="mt-5">
 
-          <p className="text-black/50">
-            {item.color}
-          </p>
+        <div className="flex justify-between items-start gap-3">
+
+          <div>
+
+            <h3 className="text-white font-semibold text-lg">
+              {item.name}
+            </h3>
+
+            <p className="text-white/45 uppercase text-xs tracking-[2px] mt-2">
+              {item.color}
+            </p>
+
+          </div>
+
+          {item.rating && (
+            <div className="flex items-center gap-1 text-white/70 text-sm">
+
+              <Star
+                size={13}
+                className="fill-[#C6FF3A] text-[#C6FF3A]"
+              />
+
+              {item.rating}
+
+            </div>
+          )}
+
         </div>
 
-        <span className="font-semibold">
-          {item.price}
-        </span>
-      </div>
+        {/* PRICE */}
+        <div className="flex items-center gap-3 mt-4">
 
-      <button className="w-full h-14 bg-black text-white uppercase tracking-[3px]">
-        Add To Bag
-      </button>
+          <span className="text-white text-xl font-bold">
+            ₹{salePrice}
+          </span>
+
+          {discount > 0 && (
+            <span className="text-white/30 line-through">
+              ₹{mrp}
+            </span>
+          )}
+
+        </div>
+
+      </div>
     </div>
   );
 }
