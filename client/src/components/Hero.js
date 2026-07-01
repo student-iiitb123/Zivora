@@ -53,11 +53,11 @@ export default function Hero() {
     <section className="relative h-screen overflow-hidden bg-black">
       {/* Background */}
       <div className="absolute inset-0">
-        <img
-          src="./assets/anshu.png"
-          alt="Katchy Collection"
-          className="w-full h-full object-cover hero-kenburns"
-        />
+       <img
+  src="./assets/anshu.png"
+  alt="Katchy Collection"
+  className="w-full h-full object-cover object-center object-[50%_25%] hero-kenburns"
+/>
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
       </div>
