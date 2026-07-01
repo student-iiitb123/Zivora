@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Search,
   Heart,
@@ -6,20 +6,75 @@ import {
   CircleUserRound,
   Menu,
   X,
+  ChevronDown,
 } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { getCart } from "../services/cartService";
+
+// Category mega-menu content. Add / edit sub-items here — the menu
+// renders itself from this data, so new drops don't need markup changes.
+const MEGA_MENU = {
+  Men: {
+    title: "MEN",
+    href: "/products?category=Men",
+    columns: [
+      {
+        heading: "SHOP",
+        items: [
+          { label: "New Arrivals", href: "/products?category=Men&sort=new" },
+          { label: "Oversized", href: "/products?category=Men&fit=Oversized" },
+          { label: "T-Shirts", href: "/products?category=Men&type=Tshirts" },
+          { label: "Shirts", href: "/products?category=Men&type=Shirts" },
+          { label: "Pants", href: "/products?category=Men&type=Pants" },
+          { label: "Accessories", href: "/products?category=Men&type=Accessories" },
+        ],
+      },
+    ],
+  },
+  Women: {
+    title: "WOMEN",
+    href: "/products?category=Women",
+    columns: [
+      {
+        heading: "SHOP",
+        items: [
+          { label: "New Arrivals", href: "/products?category=Women&sort=new" },
+          { label: "Oversized", href: "/products?category=Women&fit=Oversized" },
+          { label: "T-Shirts", href: "/products?category=Women&type=Tshirts" },
+          { label: "Shirts", href: "/products?category=Women&type=Shirts" },
+          { label: "Dresses", href: "/products?category=Women&type=Dresses" },
+          { label: "Accessories", href: "/products?category=Women&type=Accessories" },
+        ],
+      },
+    ],
+  },
+};
+
+// Flat links (no mega menu) — order here is the order they render in.
+const NAV_LINKS = [
+  { label: "NEW IN", href: "/new-arrivals" },
+  { label: "MEN", mega: "Men" },
+  { label: "WOMEN", mega: "Women" },
+  { label: "OVERSIZED", href: "/products?fit=Oversized" },
+  { label: "SHIRTS", href: "/products?type=Shirts" },
+  { label: "SUMMER EDIT", href: "/collections?tag=summer-edit" },
+  { label: "SALE", href: "/sale", accent: true },
+];
 
 export default function Navbar() {
   const [showLoginOptions, setShowLoginOptions] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [openMega, setOpenMega] = useState(null); // "Men" | "Women" | null
+  const closeMegaTimeout = useRef(null);
+  const searchInputRef = useRef(null);
 
   const location = useLocation();
-
   const isLoggedIn = !!localStorage.getItem("token");
 
-  // extract category from URL
   const queryParams = new URLSearchParams(location.search);
   const activeCategory = queryParams.get("category");
 
@@ -27,301 +82,391 @@ export default function Navbar() {
     const fetchCartCount = async () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
-
         if (!user?._id) {
           setCartCount(0);
           return;
         }
-
         const res = await getCart(user._id);
         const items = res.data.cart?.items || [];
-
-        const totalItems = items.reduce(
-          (sum, item) => sum + item.quantity,
-          0
-        );
-
+        const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
         setCartCount(totalItems);
       } catch (error) {
         console.log(error);
         setCartCount(0);
       }
     };
-
     fetchCartCount();
   }, []);
+
+  // Scroll-aware navbar background
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Autofocus search when it opens
+  useEffect(() => {
+    if (searchOpen) {
+      const t = setTimeout(() => searchInputRef.current?.focus(), 150);
+      return () => clearTimeout(t);
+    }
+  }, [searchOpen]);
+
+  // Lock body scroll behind the full-screen mobile menu
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setShowLoginOptions(false);
   };
 
-  const linkClass = (category) =>
-    `font-label-md text-label-md pb-1 border-b transition-all duration-300 ${
-      activeCategory === category
-        ? "border-black text-black"
-        : "border-transparent text-secondary hover:text-primary"
-    }`;
+  const handleMegaEnter = (key) => {
+    if (closeMegaTimeout.current) clearTimeout(closeMegaTimeout.current);
+    setOpenMega(key);
+  };
+
+  const handleMegaLeave = () => {
+    closeMegaTimeout.current = setTimeout(() => setOpenMega(null), 120);
+  };
+
+  const linkBaseClass =
+    "relative font-medium text-[12px] tracking-[3px] uppercase text-neutral-700 hover:text-black transition-colors duration-300 py-2 " +
+    "after:content-[''] after:absolute after:left-0 after:-bottom-[1px] after:h-[1.5px] after:bg-black " +
+    "after:transition-all after:duration-300 after:ease-out";
+
+  const isLinkActive = (link) => {
+    if (link.mega) return activeCategory === link.mega;
+    if (!link.href) return false;
+    return (
+      location.pathname + location.search === link.href ||
+      (link.href.includes("category=") && activeCategory && link.href.includes(activeCategory))
+    );
+  };
 
   return (
-    <header
-      id="main-nav"
-      className="sticky top-0 z-50 glass-nav border-b border-white/20 shadow-[0px_40px_60px_rgba(0,0,0,0.05)]"
-    >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-4 flex justify-between items-center">
+    <>
+      {/* ANNOUNCEMENT BAR */}
+      <div className="bg-black text-[#D4AF6A] text-center text-[11px] tracking-[2px] uppercase py-2 px-4">
+        Free shipping on orders above ₹999
+      </div>
 
-        {/* LOGO + NAV */}
-        <div className="flex items-center gap-8">
-          <Link
-            to="/"
-            className="font-display-lg text-[24px] lg:text-[28px] tracking-tighter text-primary"
-          >
-            ZIVORA
-          </Link>
-
-          <nav className="hidden md:flex gap-6">
-            <Link to="/products?category=Men" className={linkClass("Men")}>
-              MEN
+      <header
+        id="main-nav"
+        className={`sticky top-0 z-50 border-b transition-all duration-300 ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-md border-black/10 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+            : "bg-white/70 backdrop-blur-sm border-transparent"
+        }`}
+      >
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="flex justify-between items-center py-4">
+            {/* LOGO */}
+            <Link to="/" className="flex flex-col leading-none shrink-0">
+              <span className="font-display text-[26px] lg:text-[30px] tracking-[4px] text-black">
+                KATCHY
+              </span>
+              <span className="hidden sm:block text-[9px] tracking-[3px] text-[#B08A4E] mt-1">
+                MODERN STREETWEAR
+              </span>
             </Link>
 
-            <Link to="/products?category=Women" className={linkClass("Women")}>
-              WOMEN
-            </Link>
+            {/* DESKTOP NAV */}
+            <nav className="hidden md:flex items-center gap-7 mx-8">
+              {NAV_LINKS.map((link) => {
+                const active = isLinkActive(link);
+                const underline = active
+                  ? "after:w-full"
+                  : "after:w-0 hover:after:w-full";
+                const accent = link.accent ? "text-[#B23B3B]" : "";
 
-            <NavLink
-              to="/new-arrivals"
-              className={({ isActive }) =>
-                `font-label-md text-label-md pb-1 border-b transition-all duration-300 ${
-                  isActive
-                    ? "border-black text-black"
-                    : "border-transparent text-secondary hover:text-primary"
-                }`
-              }
-            >
-              NEW ARRIVALS
-            </NavLink>
-
-            <NavLink
-              to="/collections"
-              className={({ isActive }) =>
-                `font-label-md text-label-md pb-1 border-b transition-all duration-300 ${
-                  isActive
-                    ? "border-black text-black"
-                    : "border-transparent text-secondary hover:text-primary"
-                }`
-              }
-            >
-              COLLECTIONS
-            </NavLink>
-
-            {/* <NavLink
-              to="/sale"
-              className={({ isActive }) =>
-                `font-label-md text-label-md pb-1 border-b transition-all duration-300 ${
-                  isActive
-                    ? "border-black text-black"
-                    : "border-transparent text-secondary hover:text-primary"
-                }`
-              }
-            >
-              SALE
-            </NavLink> */}
-          </nav>
-        </div>
-
-        {/* SEARCH */}
-        <div className="hidden lg:flex items-center h-11 w-[260px] bg-white/80 px-4 rounded-full border border-black/10">
-          <Search size={18} strokeWidth={1.8} className="text-black/50 mr-3" />
-          <input
-            className="w-full bg-transparent border-none outline-none text-sm placeholder:text-black/40"
-            placeholder="Search products..."
-          />
-        </div>
-
-        {/* RIGHT ICONS */}
-        <div className="hidden md:flex items-center gap-5">
-          {!isLoggedIn ? (
-            <>
-              <div className="relative">
-                <button
-                  onClick={() => setShowLoginOptions(!showLoginOptions)}
-                  className="text-sm text-primary hover:opacity-60"
-                >
-                  Login
-                </button>
-
-                {showLoginOptions && (
-                  <div className="absolute right-0 top-10 w-48 bg-white rounded-xl shadow-xl border overflow-hidden z-50">
-                    <Link
-                      to="/login"
-                      className="block px-4 py-3 text-sm hover:bg-gray-50"
+                if (link.mega) {
+                  return (
+                    <div
+                      key={link.label}
+                      className="relative"
+                      onMouseEnter={() => handleMegaEnter(link.mega)}
+                      onMouseLeave={handleMegaLeave}
                     >
-                      Login as User
-                    </Link>
+                      <button
+                        className={`${linkBaseClass} ${underline} ${accent} flex items-center gap-1`}
+                      >
+                        {link.label}
+                        <ChevronDown
+                          size={12}
+                          strokeWidth={2}
+                          className={`transition-transform duration-300 ${
+                            openMega === link.mega ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  );
+                }
+
+                return (
+                  <NavLink
+                    key={link.label}
+                    to={link.href}
+                    className={`${linkBaseClass} ${underline} ${accent}`}
+                  >
+                    {link.label}
+                  </NavLink>
+                );
+              })}
+            </nav>
+
+            {/* RIGHT ICONS */}
+            <div className="flex items-center gap-5">
+              <button
+                onClick={() => setSearchOpen((v) => !v)}
+                aria-label="Toggle search"
+                className="hidden md:flex text-neutral-800 hover:opacity-60 transition-opacity"
+              >
+                {searchOpen ? <X size={20} strokeWidth={1.6} /> : <Search size={20} strokeWidth={1.6} />}
+              </button>
+
+              <div className="hidden md:flex items-center gap-5">
+                {!isLoggedIn ? (
+                  <>
+                    <div className="relative">
+                      <button
+                        onClick={() => setShowLoginOptions(!showLoginOptions)}
+                        className="text-[12px] tracking-[2px] uppercase text-neutral-800 hover:text-black"
+                      >
+                        Login
+                      </button>
+
+                      {showLoginOptions && (
+                        <div className="absolute right-0 top-8 w-48 bg-white rounded-md shadow-xl border border-black/10 overflow-hidden z-50">
+                          <Link
+                            to="/login"
+                            className="block px-4 py-3 text-sm hover:bg-neutral-50"
+                            onClick={() => setShowLoginOptions(false)}
+                          >
+                            Login as User
+                          </Link>
+                          <Link
+                            to="/admin/login"
+                            className="block px-4 py-3 text-sm border-t border-black/10 hover:bg-neutral-50"
+                            onClick={() => setShowLoginOptions(false)}
+                          >
+                            Login as Admin
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+
                     <Link
-                      to="/admin/login"
-                      className="block px-4 py-3 text-sm border-t hover:bg-gray-50"
+                      to="/register"
+                      className="text-[12px] tracking-[2px] uppercase bg-black text-white px-5 py-2.5 rounded-full hover:bg-neutral-800 transition-colors"
                     >
-                      Login as Admin
+                      Signup
                     </Link>
-                  </div>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/wishlist" className="text-neutral-800 hover:opacity-60 transition-opacity">
+                      <Heart size={20} strokeWidth={1.6} />
+                    </Link>
+
+                    <Link to="/cart" className="relative text-neutral-800 hover:opacity-60 transition-opacity">
+                      <ShoppingBag size={20} strokeWidth={1.6} />
+                      {cartCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                          {cartCount}
+                        </span>
+                      )}
+                    </Link>
+
+                    <Link to="/profile" className="text-neutral-800 hover:opacity-60 transition-opacity">
+                      <CircleUserRound size={20} strokeWidth={1.6} />
+                    </Link>
+                  </>
                 )}
               </div>
 
-              <Link
-                to="/register"
-                className="text-sm bg-black text-white px-4 py-2 rounded-full"
+              {/* MOBILE BUTTON */}
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                aria-label="Open menu"
+                className="md:hidden w-9 h-9 flex items-center justify-center text-neutral-800"
               >
-                Signup
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/wishlist">
-                <Heart size={22} />
-              </Link>
+                <Menu size={24} strokeWidth={1.6} />
+              </button>
+            </div>
+          </div>
 
-              <Link to="/cart" className="relative">
-                <ShoppingBag size={22} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-black text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
-
-              <Link to="/profile">
-                <CircleUserRound size={22} />
-              </Link>
-            </>
-          )}
+          {/* EXPANDABLE SEARCH (desktop, Zara-style slide down) */}
+          <div
+            className={`hidden md:block overflow-hidden transition-all duration-300 ease-out ${
+              searchOpen ? "max-h-16 opacity-100 pb-4" : "max-h-0 opacity-0 pb-0"
+            }`}
+          >
+            <div className="flex items-center border-b border-black/20 py-2">
+              <Search size={18} strokeWidth={1.6} className="text-black/40 mr-3" />
+              <input
+                ref={searchInputRef}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="w-full bg-transparent border-none outline-none text-sm tracking-wide placeholder:text-black/30"
+                placeholder="Search products..."
+              />
+            </div>
+          </div>
         </div>
 
-        {/* MOBILE BUTTON */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden w-10 h-10 flex items-center justify-center"
-        >
-          {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
+        {/* MEGA MENU PANEL */}
+        {openMega && MEGA_MENU[openMega] && (
+          <div
+            className="hidden md:block absolute left-0 right-0 top-full bg-white border-b border-black/10 shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
+            onMouseEnter={() => handleMegaEnter(openMega)}
+            onMouseLeave={handleMegaLeave}
+          >
+            <div className="max-w-[1440px] mx-auto px-12 py-8 flex gap-16">
+              {MEGA_MENU[openMega].columns.map((col) => (
+                <div key={col.heading}>
+                  <p className="text-[10px] tracking-[2px] text-black/40 mb-4">{col.heading}</p>
+                  <ul className="flex flex-col gap-3">
+                    {col.items.map((item) => (
+                      <li key={item.label}>
+                        <Link
+                          to={item.href}
+                          onClick={() => setOpenMega(null)}
+                          className="text-[13px] tracking-wide text-neutral-700 hover:text-black transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <Link
+                to={MEGA_MENU[openMega].href}
+                onClick={() => setOpenMega(null)}
+                className="ml-auto self-end text-[11px] tracking-[2px] uppercase border-b border-black pb-0.5 hover:opacity-60 transition-opacity"
+              >
+                View all {MEGA_MENU[openMega].title}
+              </Link>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* MOBILE FULL-SCREEN OVERLAY MENU */}
+      <div
+        className={`md:hidden fixed inset-0 z-[60] bg-black text-white transition-transform duration-300 ease-out ${
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+        }`}
+      >
+        <div className="flex flex-col h-full px-6 py-5 overflow-y-auto">
+          {/* Top bar */}
+          <div className="flex justify-between items-center mb-8">
+            <span className="font-display text-[22px] tracking-[4px]">KATCHY</span>
+            <button
+              onClick={closeMobileMenu}
+              aria-label="Close menu"
+              className="w-9 h-9 flex items-center justify-center"
+            >
+              <X size={26} strokeWidth={1.6} />
+            </button>
+          </div>
+
+          {/* Search */}
+          <div className="mb-8 flex items-center border-b border-white/25 pb-3">
+            <Search size={18} strokeWidth={1.6} className="text-white/50 mr-3" />
+            <input
+              className="w-full bg-transparent border-none outline-none text-sm text-white placeholder:text-white/40"
+              placeholder="Search products..."
+            />
+          </div>
+
+          {/* Primary nav */}
+          <nav className="flex flex-col gap-6 mb-10">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                onClick={closeMobileMenu}
+                to={link.mega ? MEGA_MENU[link.mega].href : link.href}
+                className={`text-[20px] tracking-[3px] font-light ${
+                  link.accent ? "text-[#D4816E]" : "text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Secondary links */}
+          <div className="flex flex-col gap-4 mb-10 text-white/60 text-[12px] tracking-[2px] uppercase">
+            <Link onClick={closeMobileMenu} to="/about">About</Link>
+            <Link onClick={closeMobileMenu} to="/contact">Contact</Link>
+          </div>
+
+          {/* Login / Profile */}
+          <div className="mt-auto pt-6 border-t border-white/15">
+            {!isLoggedIn ? (
+              <div className="flex flex-col gap-3">
+                <Link
+                  onClick={closeMobileMenu}
+                  to="/login"
+                  className="w-full text-center border border-white/70 py-3 rounded-full text-[12px] tracking-[2px] uppercase"
+                >
+                  Login
+                </Link>
+                <Link
+                  onClick={closeMobileMenu}
+                  to="/admin/login"
+                  className="w-full text-center text-white/50 text-[11px] tracking-[2px] uppercase"
+                >
+                  Login as Admin
+                </Link>
+                <Link
+                  onClick={closeMobileMenu}
+                  to="/register"
+                  className="w-full text-center bg-[#D4AF6A] text-black py-3 rounded-full text-[12px] tracking-[2px] uppercase font-medium"
+                >
+                  Signup
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-3">
+                <Link
+                  onClick={closeMobileMenu}
+                  to="/wishlist"
+                  className="flex flex-col items-center justify-center gap-2 bg-white/10 py-4 rounded-xl text-[11px] tracking-wide"
+                >
+                  <Heart size={20} strokeWidth={1.6} />
+                  Wishlist
+                </Link>
+                <Link
+                  onClick={closeMobileMenu}
+                  to="/cart"
+                  className="flex flex-col items-center justify-center gap-2 bg-white/10 py-4 rounded-xl text-[11px] tracking-wide"
+                >
+                  <ShoppingBag size={20} strokeWidth={1.6} />
+                  Bag
+                </Link>
+                <Link
+                  onClick={closeMobileMenu}
+                  to="/profile"
+                  className="flex flex-col items-center justify-center gap-2 bg-white/10 py-4 rounded-xl text-[11px] tracking-wide"
+                >
+                  <CircleUserRound size={20} strokeWidth={1.6} />
+                  Profile
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-
-      {/* MOBILE MENU */}
-     {mobileMenuOpen && (
-  <div className="md:hidden bg-white border-t border-black/10 px-4 py-5 shadow-xl">
-
-    {/* Search */}
-    <div className="mb-5 flex items-center h-11 w-full bg-neutral-100 px-4 rounded-full border border-black/10">
-      <Search size={18} strokeWidth={1.8} className="text-black/50 mr-3" />
-
-      <input
-        className="w-full bg-transparent border-none outline-none text-sm placeholder:text-black/40"
-        placeholder="Search products..."
-        type="text"
-      />
-    </div>
-
-    {/* Navigation */}
-    <nav className="flex flex-col gap-4">
-      <Link
-        onClick={closeMobileMenu}
-        to="/products?category=Men"
-        className="text-sm font-medium tracking-widest"
-      >
-        MEN
-      </Link>
-
-      <Link
-        onClick={closeMobileMenu}
-        to="/products?category=Women"
-        className="text-sm font-medium tracking-widest"
-      >
-        WOMEN
-      </Link>
-
-      <Link
-        onClick={closeMobileMenu}
-        to="/new-arrivals"
-        className="text-sm font-medium tracking-widest"
-      >
-        NEW ARRIVALS
-      </Link>
-
-      <Link
-        onClick={closeMobileMenu}
-        to="/collections"
-        className="text-sm font-medium tracking-widest"
-      >
-        COLLECTIONS
-      </Link>
-    </nav>
-
-    {/* Login / Profile Section */}
-    <div className="mt-6 pt-6 border-t border-black/10">
-      {!isLoggedIn ? (
-        <div className="flex flex-col gap-3">
-
-          <Link
-            onClick={closeMobileMenu}
-            to="/login"
-            className="w-full text-center border border-black py-3 rounded-full text-sm font-medium"
-          >
-            Login as User
-          </Link>
-
-          <Link
-            onClick={closeMobileMenu}
-            to="/admin/login"
-            className="w-full text-center border border-black py-3 rounded-full text-sm font-medium"
-          >
-            Login as Admin
-          </Link>
-
-          <Link
-            onClick={closeMobileMenu}
-            to="/register"
-            className="w-full text-center bg-black text-white py-3 rounded-full text-sm font-medium"
-          >
-            Signup
-          </Link>
-
-        </div>
-      ) : (
-        <div className="grid grid-cols-3 gap-3">
-
-          <Link
-            onClick={closeMobileMenu}
-            to="/wishlist"
-            className="flex flex-col items-center justify-center gap-2 bg-neutral-100 py-4 rounded-xl text-xs"
-          >
-            <Heart size={20} />
-            Wishlist
-          </Link>
-
-          <Link
-            onClick={closeMobileMenu}
-            to="/cart"
-            className="flex flex-col items-center justify-center gap-2 bg-neutral-100 py-4 rounded-xl text-xs"
-          >
-            <ShoppingBag size={20} />
-            Bag
-          </Link>
-
-          <Link
-            onClick={closeMobileMenu}
-            to="/profile"
-            className="flex flex-col items-center justify-center gap-2 bg-neutral-100 py-4 rounded-xl text-xs"
-          >
-            <CircleUserRound size={20} />
-            Profile
-          </Link>
-
-        </div>
-      )}
-    </div>
-
-  </div>
-)}
-    </header>
+    </>
   );
 }

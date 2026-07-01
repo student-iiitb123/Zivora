@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           <div className="sm:col-span-2 lg:col-span-1">
             <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-5 sm:mb-6">
-              ZIVORA
+              KATCHY
             </h1>
 
             <p className="text-white/60 text-sm leading-relaxed max-w-xs mb-6 sm:mb-8">
