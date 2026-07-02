@@ -200,7 +200,7 @@ export default function Navbar() {
             {/* LOGO */}
             <Link to="/" className="flex flex-col items-start leading-none shrink-0">
               <img
-                src='../../assets/katchy-logo.png'
+                src='../../assets/katchy-logo.webp'
                 alt="Katchy"
                 className="h-20 lg:h-24 w-auto object-contain"
               />
