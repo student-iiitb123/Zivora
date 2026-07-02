@@ -12,6 +12,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { getCart } from "../services/cartService";
 // import logo from "../../public/assets/Katchy-logo.png";
 
+
 // Category mega-menu content. Add / edit sub-items here — the menu
 // renders itself from this data, so new drops don't need markup changes.
 const MEGA_MENU = {
@@ -201,7 +202,7 @@ export default function Navbar() {
               <img
                 src='../../assets/katchy-logo.png'
                 alt="Katchy"
-                className="h-10 lg:h-12 w-auto object-contain"
+                className="h-20 lg:h-24 w-auto object-contain"
               />
               <span className="hidden sm:block text-[9px] tracking-[3px] text-[#B08A4E] mt-1">
                 MODERN STREETWEAR
