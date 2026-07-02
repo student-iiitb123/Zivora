@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { getCart } from "../services/cartService";
+// import logo from "../../public/assets/Katchy-logo.png";
 
 // Category mega-menu content. Add / edit sub-items here — the menu
 // renders itself from this data, so new drops don't need markup changes.
@@ -196,10 +197,12 @@ export default function Navbar() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="flex justify-between items-center py-4">
             {/* LOGO */}
-            <Link to="/" className="flex flex-col leading-none shrink-0">
-              <span className="font-display text-[26px] lg:text-[30px] tracking-[4px] text-black">
-                KATCHY
-              </span>
+            <Link to="/" className="flex flex-col items-start leading-none shrink-0">
+              <img
+                src='../../assets/katchy-logo.png'
+                alt="Katchy"
+                className="h-10 lg:h-12 w-auto object-contain"
+              />
               <span className="hidden sm:block text-[9px] tracking-[3px] text-[#B08A4E] mt-1">
                 MODERN STREETWEAR
               </span>
@@ -215,6 +218,9 @@ export default function Navbar() {
                 const accent = link.accent ? "text-[#B23B3B]" : "";
 
                 if (link.mega) {
+                  const menu = MEGA_MENU[link.mega];
+                  const isOpen = openMega === link.mega;
+
                   return (
                     <div
                       key={link.label}
@@ -223,6 +229,9 @@ export default function Navbar() {
                       onMouseLeave={handleMegaLeave}
                     >
                       <button
+                        onClick={() =>
+                          setOpenMega(isOpen ? null : link.mega)
+                        }
                         className={`${linkBaseClass} ${underline} ${accent} flex items-center gap-1`}
                       >
                         {link.label}
@@ -230,10 +239,43 @@ export default function Navbar() {
                           size={12}
                           strokeWidth={2}
                           className={`transition-transform duration-300 ${
-                            openMega === link.mega ? "rotate-180" : ""
+                            isOpen ? "rotate-180" : ""
                           }`}
                         />
                       </button>
+
+                      {/* small dropdown box, anchored under this link only */}
+                      {isOpen && menu && (
+                        <div className="absolute left-0 top-full mt-3 w-64 bg-white border border-black/10 rounded-xl shadow-xl overflow-hidden z-50">
+                          {menu.columns.map((col) => (
+                            <div key={col.heading} className="px-5 pt-4 pb-2">
+                              <p className="text-[10px] tracking-[2px] text-black/40 mb-3">
+                                {col.heading}
+                              </p>
+                              <ul className="flex flex-col gap-2.5 mb-1">
+                                {col.items.map((item) => (
+                                  <li key={item.label}>
+                                    <Link
+                                      to={item.href}
+                                      onClick={() => setOpenMega(null)}
+                                      className="text-[13px] tracking-wide text-neutral-700 hover:text-black transition-colors"
+                                    >
+                                      {item.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                          <Link
+                            to={menu.href}
+                            onClick={() => setOpenMega(null)}
+                            className="block px-5 py-3 text-[11px] tracking-[2px] uppercase border-t border-black/10 hover:bg-neutral-50 transition-colors"
+                          >
+                            View all {menu.title}
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   );
                 }
@@ -349,43 +391,6 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-
-        {/* MEGA MENU PANEL */}
-        {openMega && MEGA_MENU[openMega] && (
-          <div
-            className="hidden md:block absolute left-0 right-0 top-full bg-white border-b border-black/10 shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
-            onMouseEnter={() => handleMegaEnter(openMega)}
-            onMouseLeave={handleMegaLeave}
-          >
-            <div className="max-w-[1440px] mx-auto px-12 py-8 flex gap-16">
-              {MEGA_MENU[openMega].columns.map((col) => (
-                <div key={col.heading}>
-                  <p className="text-[10px] tracking-[2px] text-black/40 mb-4">{col.heading}</p>
-                  <ul className="flex flex-col gap-3">
-                    {col.items.map((item) => (
-                      <li key={item.label}>
-                        <Link
-                          to={item.href}
-                          onClick={() => setOpenMega(null)}
-                          className="text-[13px] tracking-wide text-neutral-700 hover:text-black transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-              <Link
-                to={MEGA_MENU[openMega].href}
-                onClick={() => setOpenMega(null)}
-                className="ml-auto self-end text-[11px] tracking-[2px] uppercase border-b border-black pb-0.5 hover:opacity-60 transition-opacity"
-              >
-                View all {MEGA_MENU[openMega].title}
-              </Link>
-            </div>
-          </div>
-        )}
       </header>
 
       {/* MOBILE FULL-SCREEN OVERLAY MENU */}
@@ -397,7 +402,7 @@ export default function Navbar() {
         <div className="flex flex-col h-full px-6 py-5 overflow-y-auto">
           {/* Top bar */}
           <div className="flex justify-between items-center mb-8">
-            <span className="font-display text-[22px] tracking-[4px]">KATCHY</span>
+            <img src='../../assets/katchy-logo.png' alt="Katchy" className="h-9 w-auto object-contain" />
             <button
               onClick={closeMobileMenu}
               aria-label="Close menu"
