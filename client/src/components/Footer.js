@@ -4,9 +4,11 @@ export default function Footer() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 sm:py-16 lg:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           <div className="sm:col-span-2 lg:col-span-1">
-            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-5 sm:mb-6">
-              KATCHY
-            </h1>
+             <img
+                src='../../assets/katchy-logo.png'
+                alt="Katchy"
+                className="h-20 lg:h-24 w-auto object-contain"
+              />
 
             <p className="text-white/60 text-sm leading-relaxed max-w-xs mb-6 sm:mb-8">
               Redefining contemporary luxury through architectural silhouettes
