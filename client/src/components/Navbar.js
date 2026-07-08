@@ -204,9 +204,7 @@ export default function Navbar() {
                 alt="Katchy"
                 className="h-20 lg:h-24 w-auto object-contain"
               />
-              <span className="hidden sm:block text-[9px] tracking-[3px] text-[#B08A4E] mt-1">
-                MODERN STREETWEAR
-              </span>
+             
             </Link>
 
             {/* DESKTOP NAV */}
