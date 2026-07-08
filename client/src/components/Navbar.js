@@ -199,12 +199,11 @@ export default function Navbar() {
           <div className="flex justify-between items-center py-4">
             {/* LOGO */}
             <Link to="/" className="flex flex-col items-start leading-none shrink-0">
-              <img
-                src='../../assets/katchy-logo.png'
-                alt="Katchy"
-                className="h-20 lg:h-24 w-auto object-contain"
-              />
-             
+             <img
+  src="../../assets/katchy-logo.png"
+  alt="Katchy"
+  className="h-32 lg:h-36 w-auto object-contain"
+/>
             </Link>
 
             {/* DESKTOP NAV */}
