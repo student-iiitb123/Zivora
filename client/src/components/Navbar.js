@@ -202,7 +202,7 @@ export default function Navbar() {
               <img
                 src='../../assets/katchy-logo.png'
                 alt="Katchy"
-                className="h-30 lg:h-28 w-auto object-contain"
+                className="h-20 lg:h-24 w-auto object-contain"
               />
              
             </Link>
