@@ -14,7 +14,7 @@ import { getCart } from "../services/cartService";
 
 
 // Category mega-menu content. Add / edit sub-items here — the menu
-// renders itself from this data, so new drops don't need markup changes.
+
 const MEGA_MENU = {
   Men: {
     title: "MEN",
