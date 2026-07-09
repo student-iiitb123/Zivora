@@ -13,7 +13,7 @@ import { getCart } from "../services/cartService";
 
 
 
-// Category mega-menu content. Add / edit sub-items here — the menu
+
 
 const MEGA_MENU = {
   Men: {
