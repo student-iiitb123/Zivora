@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { getCart } from "../services/cartService";
-// import logo from "../../public/assets/Katchy-logo.png";
+
 
 
 // Category mega-menu content. Add / edit sub-items here — the menu
