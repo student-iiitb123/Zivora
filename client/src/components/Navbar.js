@@ -116,7 +116,7 @@ export default function Navbar() {
     }
   }, [searchOpen]);
 
-  // Lock body scroll behind the full-screen mobile menu
+  // Lock body scroll behind the full-screen mobile menu  yvdyv
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => {
