@@ -99,6 +99,19 @@ const listingSchema = new mongoose.Schema(
       default: 0,
     },
 
+    // ⭐ Review Information
+    average_rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+
+    total_reviews: {
+      type: Number,
+      default: 0,
+    },
+
     // Flags
     is_featured: {
       type: Boolean,
