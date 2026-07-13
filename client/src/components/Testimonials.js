@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Star, Quote, BadgeCheck, ChevronLeft, ChevronRight } from "lucide-react";
-import { getTopReviews } from "../../../services/reviewService.js";
-
+import { getTopReviews } from "../services/reviewService";
 // Fallback shown only if the API returns nothing (empty state / API down)
 const FALLBACK_TESTIMONIALS = [
   {
