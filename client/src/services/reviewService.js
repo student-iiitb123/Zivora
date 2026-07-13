@@ -26,7 +26,4 @@ export const deleteReview = (reviewId, token) =>
     },
   });
 
-  export const getTopReviews = async () => {
-  const { data } = await API.get("/reviews/top");
-  return data;
-};
+ export const getTopReviews = () => API.get("/reviews/top");
