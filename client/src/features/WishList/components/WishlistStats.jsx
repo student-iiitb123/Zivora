@@ -1,6 +1,16 @@
 import StatsCard from "./StatsCard";
 
-function WishlistStats() {
+function WishlistStats({ wishlist }) {
+  const savedItems = wishlist.length;
+
+  const totalValue = wishlist.reduce((total, item) => {
+    return total + (item.product?.sale_price || 0);
+  }, 0);
+
+  // For now
+  const priceDrops = 0;
+  const backInStock = 0;
+
   return (
     <section className="relative -mt-14 z-20 pb-20">
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-12">
@@ -9,25 +19,25 @@ function WishlistStats() {
 
           <StatsCard
             title="Saved Items"
-            value="12"
+            value={savedItems}
             icon="wishlist"
           />
 
           <StatsCard
             title="Total Value"
-            value="₹42,560"
+            value={`₹${totalValue.toLocaleString("en-IN")}`}
             icon="value"
           />
 
           <StatsCard
             title="Price Drops"
-            value="6"
+            value={priceDrops}
             icon="discount"
           />
 
           <StatsCard
             title="Back In Stock"
-            value="3"
+            value={backInStock}
             icon="stock"
           />
 
