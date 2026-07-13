@@ -1,5 +1,5 @@
-import reviewModel from "./reviewModel.js";
-import listingModel from "../listing/listing.model.js";
+import Review from "./reviewModel.js";
+import Listing from "../listing/listing.model.js";
 
 const updateProductRating = async (productId) => {
   const reviews = await Review.find({ product: productId });

@@ -9,7 +9,7 @@ import authRoutes from "./modules/auth/auth.routes.js";
 import listingRoutes from "./modules/listing/listing.route.js";
 import cartRoutes from "./modules/cart/cartRoutes.js";
 import orderRoutes from "./modules/orders/orderRoutes.js";
-
+import reviewRoutes from "./modules/reviews/reviewRoutes.js";
 const app = express();
 
 app.use(
@@ -26,6 +26,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:");
