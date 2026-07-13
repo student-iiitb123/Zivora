@@ -4,8 +4,8 @@ import { addToCart } from "../../../services/cartService";
 import axios from "axios";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
-import { Heart } from "lucide-react";
-import { getReviews } from "../../../services/reviewService.js";
+import { Heart, Star } from "lucide-react";
+import { getReviews, addReview } from "../../../services/reviewService.js";
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -18,6 +18,14 @@ function ProductDetailPage() {
   const [selectedColor, setSelectedColor] = useState("");
   const [reviews, setReviews] = useState([]);
   const [reviewLoading, setReviewLoading] = useState(true);
+
+  // Write review state
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [ratingInput, setRatingInput] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [commentInput, setCommentInput] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [reviewError, setReviewError] = useState("");
 
   // Fetch product details
   useEffect(() => {
@@ -45,22 +53,22 @@ function ProductDetailPage() {
     fetchProduct();
   }, [id]);
 
-  // Fetch reviews (moved out of handleAddToBag — it was defined there but never called)
+  // Fetch reviews
+  const fetchReviews = async () => {
+    try {
+      setReviewLoading(true);
+
+      const { data } = await getReviews(id);
+
+      setReviews(data.reviews || []);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setReviewLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        setReviewLoading(true);
-
-        const { data } = await getReviews(id);
-
-        setReviews(data.reviews || []);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setReviewLoading(false);
-      }
-    };
-
     fetchReviews();
   }, [id]);
 
@@ -87,6 +95,58 @@ function ProductDetailPage() {
       navigate("/cart");
     } catch (error) {
       console.error("Add To Cart Error:", error);
+    }
+  };
+
+  const handleWriteReviewClick = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user?._id) {
+      alert("Please login first");
+      navigate("/login");
+      return;
+    }
+
+    setShowReviewForm((prev) => !prev);
+  };
+
+  const handleSubmitReview = async () => {
+    setReviewError("");
+
+    if (ratingInput === 0) {
+      setReviewError("Please select a rating.");
+      return;
+    }
+
+    if (!commentInput.trim()) {
+      setReviewError("Please write a comment.");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      await addReview({
+        productId: id,
+        userId: user._id,
+        rating: ratingInput,
+        comment: commentInput.trim(),
+      });
+
+      // Reset form
+      setRatingInput(0);
+      setCommentInput("");
+      setShowReviewForm(false);
+
+      // Refresh review list
+      fetchReviews();
+    } catch (error) {
+      console.error("Add Review Error:", error);
+      setReviewError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -160,14 +220,14 @@ function ProductDetailPage() {
             </p>
 
             <div className="flex items-center gap-3 mb-6">
-  <span className="text-yellow-500 text-lg">
-    {"⭐".repeat(Math.round(product.average_rating || 0))}
-  </span>
+              <span className="text-yellow-500 text-lg">
+                {"⭐".repeat(Math.round(product.average_rating || 0))}
+              </span>
 
-  <span className="text-sm text-gray-600">
-    {product.average_rating || 0} ({product.total_reviews || 0} Reviews)
-  </span>
-</div>
+              <span className="text-sm text-gray-600">
+                {product.average_rating || 0} ({product.total_reviews || 0} Reviews)
+              </span>
+            </div>
 
             <p className="text-black/60 mb-8 leading-relaxed">
               {product.description}
@@ -280,19 +340,82 @@ function ProductDetailPage() {
 
         {/* Reviews */}
         <section className="pb-24 border-t border-black/10 pt-12">
-          <h2 className="text-2xl font-semibold mb-8">Customer Reviews</h2>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-semibold">Customer Reviews</h2>
+
+            <button
+              onClick={handleWriteReviewClick}
+              className="px-5 py-2 border border-black uppercase tracking-[2px] text-xs hover:bg-black hover:text-white transition-colors"
+            >
+              {showReviewForm ? "Cancel" : "Write a Review"}
+            </button>
+          </div>
+
+          {/* Write Review Form */}
+          {showReviewForm && (
+            <div className="border border-black/10 rounded-md p-6 mb-10 bg-neutral-50">
+              <p className="text-xs uppercase tracking-[3px] mb-3">
+                Your Rating
+              </p>
+
+              <div className="flex gap-1 mb-5">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => setRatingInput(star)}
+                  >
+                    <Star
+                      size={26}
+                      className={
+                        (hoverRating || ratingInput) >= star
+                          ? "fill-yellow-500 text-yellow-500"
+                          : "text-black/20"
+                      }
+                    />
+                  </button>
+                ))}
+              </div>
+
+              <p className="text-xs uppercase tracking-[3px] mb-3">
+                Your Review
+              </p>
+
+              <textarea
+                value={commentInput}
+                onChange={(e) => setCommentInput(e.target.value)}
+                rows={4}
+                placeholder="Share your thoughts about this product..."
+                className="w-full border border-black/20 p-3 text-sm mb-3 focus:outline-none focus:border-black"
+              />
+
+              {reviewError && (
+                <p className="text-red-500 text-xs mb-3">{reviewError}</p>
+              )}
+
+              <button
+                onClick={handleSubmitReview}
+                disabled={submitting}
+                className="px-6 py-3 bg-black text-white uppercase tracking-[3px] text-xs disabled:opacity-50"
+              >
+                {submitting ? "Submitting..." : "Submit Review"}
+              </button>
+            </div>
+          )}
 
           {reviewLoading ? (
             <p className="text-black/60">Loading reviews...</p>
           ) : reviews.length === 0 ? (
-            <p className="text-black/60">No reviews yet.</p>
+            <p className="text-black/60">No reviews yet. Be the first to review this product.</p>
           ) : (
             <div className="space-y-6">
               {reviews.map((review, index) => (
                 <div key={review._id || index} className="border-b border-black/10 pb-6">
-                 <p className="text-sm font-semibold mb-1">
-  {review.user?.name || "Anonymous"} — {"⭐".repeat(review.rating)}
-</p>
+                  <p className="text-sm font-semibold mb-1">
+                    {review.user?.name || "Anonymous"} — {"⭐".repeat(review.rating)}
+                  </p>
                   <p className="text-sm text-black/60">{review.comment}</p>
                 </div>
               ))}
