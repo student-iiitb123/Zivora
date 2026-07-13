@@ -10,6 +10,7 @@ import listingRoutes from "./modules/listing/listing.route.js";
 import cartRoutes from "./modules/cart/cartRoutes.js";
 import orderRoutes from "./modules/orders/orderRoutes.js";
 import reviewRoutes from "./modules/reviews/reviewRoutes.js";
+import wishlistModel from "./modules/wishlist/wishlistModel.js";
 const app = express();
 
 app.use(
@@ -27,6 +28,7 @@ app.use("/api/listings", listingRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:");
