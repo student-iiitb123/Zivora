@@ -7,7 +7,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import { getTopReviews } from "../../../services/reviewService";
+import { getTopReviews } from "../services/reviewService";
 
 export default function Testimonials() {
   const [reviews, setReviews] = useState([]);
