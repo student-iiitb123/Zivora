@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Star, Quote, BadgeCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import { getTopReviews } from "../../../services/reviewService.js";
 
-const TESTIMONIALS = [
+// Fallback shown only if the API returns nothing (empty state / API down)
+const FALLBACK_TESTIMONIALS = [
   {
     quote:
       "Katchy completely redefined my wardrobe. The fabrics hit different and the fits are unmatched — it's my go-to for pieces that actually feel premium.",
     name: "Aanya Kapoor",
     handle: "@aanya.wears",
     role: "Verified Buyer",
+    rating: 5,
     avatarColor: "#C6FF3A",
   },
   {
@@ -16,6 +19,7 @@ const TESTIMONIALS = [
     name: "Rohan Malhotra",
     handle: "@rohan.fits",
     role: "Verified Buyer",
+    rating: 5,
     avatarColor: "#FF3AA7",
   },
   {
@@ -24,26 +28,82 @@ const TESTIMONIALS = [
     name: "Simran Bedi",
     handle: "@simran.b",
     role: "Verified Buyer",
+    rating: 5,
     avatarColor: "#3AD4FF",
   },
 ];
 
+const AVATAR_COLORS = ["#C6FF3A", "#FF3AA7", "#3AD4FF", "#FFB23A", "#B23AFF"];
+
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef(null);
 
+  // Fetch top reviews dynamically
   useEffect(() => {
-    if (paused) return;
+    const fetchTopReviews = async () => {
+      try {
+        setLoading(true);
+
+        const { data } = await getTopReviews();
+        const rawReviews = data.reviews || data.data || [];
+
+        // Only keep reviews with an actual comment, sorted best-first
+        const mapped = rawReviews
+          .filter((r) => r.comment?.trim())
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, 6)
+          .map((r, index) => ({
+            quote: r.comment,
+            name: r.user?.name || "Verified Buyer",
+            handle: r.user?.handle || `@${(r.user?.name || "user").toLowerCase().replace(/\s+/g, "")}`,
+            role: "Verified Buyer",
+            rating: r.rating || 5,
+            avatarColor: AVATAR_COLORS[index % AVATAR_COLORS.length],
+          }));
+
+        setTestimonials(mapped.length > 0 ? mapped : FALLBACK_TESTIMONIALS);
+      } catch (error) {
+        console.error("Fetch Top Reviews Error:", error);
+        setTestimonials(FALLBACK_TESTIMONIALS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopReviews();
+  }, []);
+
+  // Auto-rotate
+  useEffect(() => {
+    if (paused || testimonials.length === 0) return;
     timerRef.current = setInterval(() => {
-      setActive((prev) => (prev + 1) % TESTIMONIALS.length);
+      setActive((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(timerRef.current);
-  }, [paused]);
+  }, [paused, testimonials]);
 
-  const goTo = (i) => setActive(((i % TESTIMONIALS.length) + TESTIMONIALS.length) % TESTIMONIALS.length);
+  const goTo = (i) => {
+    if (testimonials.length === 0) return;
+    setActive(((i % testimonials.length) + testimonials.length) % testimonials.length);
+  };
 
-  const current = TESTIMONIALS[active];
+  if (loading) {
+    return (
+      <section className="relative py-16 sm:py-24 lg:py-32 bg-black flex items-center justify-center">
+        <p className="text-white/40 text-sm font-mono uppercase tracking-[3px]">
+          Loading reviews...
+        </p>
+      </section>
+    );
+  }
+
+  if (testimonials.length === 0) return null;
+
+  const current = testimonials[active];
   const initials = current.name
     .split(" ")
     .map((n) => n[0])
@@ -72,19 +132,23 @@ export default function Testimonials() {
           className="mx-auto mb-4 text-[#C6FF3A] fill-[#C6FF3A] opacity-80"
         />
 
-        {/* stars */}
+        {/* stars — now dynamic based on the actual review rating */}
         <div className="flex justify-center gap-1 mb-8 sm:mb-10">
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
               size={20}
               strokeWidth={0}
-              className="fill-[#C6FF3A] text-[#C6FF3A]"
+              className={
+                i < current.rating
+                  ? "fill-[#C6FF3A] text-[#C6FF3A]"
+                  : "fill-white/10 text-white/10"
+              }
             />
           ))}
         </div>
 
-        {/* quote text — fixed min-height so the layout doesn't jump between quotes */}
+        {/* quote text */}
         <div className="min-h-[180px] sm:min-h-[200px] lg:min-h-[220px] flex items-center justify-center mb-10 sm:mb-12">
           <blockquote
             key={active}
@@ -126,7 +190,7 @@ export default function Testimonials() {
           </button>
 
           <div className="flex items-center gap-2">
-            {TESTIMONIALS.map((_, i) => (
+            {testimonials.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
