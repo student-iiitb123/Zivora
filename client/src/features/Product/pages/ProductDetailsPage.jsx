@@ -5,7 +5,10 @@ import axios from "axios";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import { Heart, Star } from "lucide-react";
-import { getReviews, addReview } from "../../../services/reviewService.js";
+import {
+  getReviews,
+  createReview,
+} from "../../../services/reviewService.js";
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -60,7 +63,7 @@ function ProductDetailPage() {
 
       const { data } = await getReviews(id);
 
-      setReviews(data.reviews || []);
+      setReviews(data.reviews || data.data || []);
     } catch (err) {
       console.log(err);
     } finally {
@@ -99,9 +102,9 @@ function ProductDetailPage() {
   };
 
   const handleWriteReviewClick = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
 
-    if (!user?._id) {
+    if (!token) {
       alert("Please login first");
       navigate("/login");
       return;
@@ -126,14 +129,22 @@ function ProductDetailPage() {
     try {
       setSubmitting(true);
 
-      const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("token");
 
-      await addReview({
-        productId: id,
-        userId: user._id,
-        rating: ratingInput,
-        comment: commentInput.trim(),
-      });
+      if (!token) {
+        alert("Please login first");
+        navigate("/login");
+        return;
+      }
+
+      await createReview(
+        id,
+        {
+          rating: ratingInput,
+          comment: commentInput.trim(),
+        },
+        token
+      );
 
       // Reset form
       setRatingInput(0);
@@ -144,7 +155,9 @@ function ProductDetailPage() {
       fetchReviews();
     } catch (error) {
       console.error("Add Review Error:", error);
-      setReviewError("Something went wrong. Please try again.");
+      setReviewError(
+        error.response?.data?.message || "Something went wrong. Please try again."
+      );
     } finally {
       setSubmitting(false);
     }
