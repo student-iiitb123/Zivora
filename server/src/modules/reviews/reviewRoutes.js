@@ -7,23 +7,23 @@ import {
   getTopReviews,
 } from "./reviewController.js";
 
-import  { protect }  from "../auth/auth.middleware.js";
+import { protect } from "../auth/auth.middleware.js";
 
 const router = express.Router();
 
-// Add a review
-router.post("/:productId",protect, createReview);
+// Top reviews (must come before /:productId)
+router.get("/top", getTopReviews);
 
-// Get all reviews for a product
+// Add review
+router.post("/:productId", protect, createReview);
+
+// Get reviews of product
 router.get("/:productId", getProductReviews);
 
-// Update a review
-router.put("/:reviewId",protect, updateReview);
+// Update review
+router.put("/:reviewId", protect, updateReview);
 
-// Delete a review
-router.delete("/:reviewId",protect, deleteReview);
-
-
-router.get("/top", getTopReviews);
+// Delete review
+router.delete("/:reviewId", protect, deleteReview);
 
 export default router;

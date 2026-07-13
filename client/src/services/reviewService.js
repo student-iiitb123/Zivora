@@ -26,4 +26,5 @@ export const deleteReview = (reviewId, token) =>
     },
   });
 
- export const getTopReviews = () => API.get("/reviews/top");
+export const getTopReviews = () =>
+  axios.get(`${BASE_URL}/top`);
