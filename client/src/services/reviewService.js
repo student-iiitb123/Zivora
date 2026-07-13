@@ -25,3 +25,8 @@ export const deleteReview = (reviewId, token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+  export const getTopReviews = async () => {
+  const { data } = await API.get("/reviews/top");
+  return data;
+};

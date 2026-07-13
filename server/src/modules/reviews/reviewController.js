@@ -168,3 +168,25 @@ export const deleteReview = async (req, res) => {
     });
   }
 };
+
+export const getTopReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({ rating: { $gte: 4 } })
+      .populate("user", "name")
+      .sort({
+        rating: -1,
+        createdAt: -1,
+      })
+      .limit(6);
+
+    res.status(200).json({
+      success: true,
+      reviews,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

@@ -4,6 +4,7 @@ import {
   getProductReviews,
   updateReview,
   deleteReview,
+  getTopReviews,
 } from "./reviewController.js";
 
 import  { protect }  from "../auth/auth.middleware.js";
@@ -21,5 +22,8 @@ router.put("/:reviewId",protect, updateReview);
 
 // Delete a review
 router.delete("/:reviewId",protect, deleteReview);
+
+
+router.get("/top", getTopReviews);
 
 export default router;

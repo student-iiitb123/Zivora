@@ -33,7 +33,7 @@ const FALLBACK_TESTIMONIALS = [
   },
 ];
 
-const AVATAR_COLORS = ["#C6FF3A", "#FF3AA7", "#3AD4FF", "#FFB23A", "#B23AFF"];
+const AVATAR_COLORS = ["#C6FF3A", "#FF3AA7", "#3AD4FF", "#FFB23A", "#B23AFF", "#3AFFB2"];
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState([]);
@@ -48,22 +48,25 @@ export default function Testimonials() {
       try {
         setLoading(true);
 
-        const { data } = await getTopReviews();
-        const rawReviews = data.reviews || data.data || [];
+        // getTopReviews() already returns the parsed { success, reviews } object
+        const data = await getTopReviews();
+        const rawReviews = data?.reviews || [];
 
-        // Only keep reviews with an actual comment, sorted best-first
         const mapped = rawReviews
           .filter((r) => r.comment?.trim())
-          .sort((a, b) => b.rating - a.rating)
-          .slice(0, 6)
-          .map((r, index) => ({
-            quote: r.comment,
-            name: r.user?.name || "Verified Buyer",
-            handle: r.user?.handle || `@${(r.user?.name || "user").toLowerCase().replace(/\s+/g, "")}`,
-            role: "Verified Buyer",
-            rating: r.rating || 5,
-            avatarColor: AVATAR_COLORS[index % AVATAR_COLORS.length],
-          }));
+          .map((r, index) => {
+            const name = r.user?.name || "Verified Buyer";
+            const handle = `@${name.toLowerCase().replace(/\s+/g, "")}`;
+
+            return {
+              quote: r.comment,
+              name,
+              handle,
+              role: "Verified Buyer",
+              rating: r.rating || 5,
+              avatarColor: AVATAR_COLORS[index % AVATAR_COLORS.length],
+            };
+          });
 
         setTestimonials(mapped.length > 0 ? mapped : FALLBACK_TESTIMONIALS);
       } catch (error) {
@@ -132,7 +135,7 @@ export default function Testimonials() {
           className="mx-auto mb-4 text-[#C6FF3A] fill-[#C6FF3A] opacity-80"
         />
 
-        {/* stars — now dynamic based on the actual review rating */}
+        {/* stars — dynamic based on the actual review rating */}
         <div className="flex justify-center gap-1 mb-8 sm:mb-10">
           {[...Array(5)].map((_, i) => (
             <Star
@@ -148,7 +151,7 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* quote text */}
+        {/* quote text — fixed min-height so the layout doesn't jump between quotes */}
         <div className="min-h-[180px] sm:min-h-[200px] lg:min-h-[220px] flex items-center justify-center mb-10 sm:mb-12">
           <blockquote
             key={active}
