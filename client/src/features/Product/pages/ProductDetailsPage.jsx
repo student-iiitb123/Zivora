@@ -5,17 +5,21 @@ import axios from "axios";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import { Heart } from "lucide-react";
+import { getReviews } from "../../../services/reviewService.js";
 
 function ProductDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-const navigate = useNavigate();
+  const [reviews, setReviews] = useState([]);
+  const [reviewLoading, setReviewLoading] = useState(true);
 
+  // Fetch product details
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -29,8 +33,8 @@ const navigate = useNavigate();
           setSelectedSize(data.data.sizes[0]);
         }
         if (data.data.colors?.length > 0) {
-  setSelectedColor(data.data.colors[0]);
-}
+          setSelectedColor(data.data.colors[0]);
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -41,31 +45,50 @@ const navigate = useNavigate();
     fetchProduct();
   }, [id]);
 
+  // Fetch reviews (moved out of handleAddToBag — it was defined there but never called)
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setReviewLoading(true);
+
+        const { data } = await getReviews(id);
+
+        setReviews(data.reviews || []);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setReviewLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
+
   const handleAddToBag = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem("user"));
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!user?._id) {
-      alert("Please login first");
-      navigate("/login");
-      return;
+      if (!user?._id) {
+        alert("Please login first");
+        navigate("/login");
+        return;
+      }
+
+      const res = await addToCart({
+        userId: user._id,
+        productId: product._id,
+        quantity: 1,
+        size: selectedSize,
+        color: selectedColor,
+      });
+
+      console.log("Add To Cart Response:", res.data);
+
+      navigate("/cart");
+    } catch (error) {
+      console.error("Add To Cart Error:", error);
     }
-
-    const res = await addToCart({
-      userId: user._id,
-      productId: product._id,
-      quantity: 1,
-      size: selectedSize,
-      color: selectedColor,
-    });
-
-    console.log("Add To Cart Response:", res.data);
-
-    navigate("/cart");
-  } catch (error) {
-    console.error("Add To Cart Error:", error);
-  }
-};
+  };
 
   if (loading) {
     return (
@@ -136,6 +159,16 @@ const navigate = useNavigate();
               ₹{product.sale_price}
             </p>
 
+            <div className="flex items-center gap-3 mb-6">
+  <span className="text-yellow-500 text-lg">
+    {"⭐".repeat(Math.round(product.average_rating || 0))}
+  </span>
+
+  <span className="text-sm text-gray-600">
+    {product.average_rating || 0} ({product.total_reviews || 0} Reviews)
+  </span>
+</div>
+
             <p className="text-black/60 mb-8 leading-relaxed">
               {product.description}
             </p>
@@ -148,19 +181,19 @@ const navigate = useNavigate();
                 </p>
 
                 <div className="flex flex-wrap gap-2">
-                 {product.colors.map((color, index) => (
-  <button
-    key={index}
-    onClick={() => setSelectedColor(color)}
-    className={`px-3 py-1 border text-xs uppercase ${
-      selectedColor === color
-        ? "bg-black text-white"
-        : ""
-    }`}
-  >
-    {color}
-  </button>
-))}
+                  {product.colors.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedColor(color)}
+                      className={`px-3 py-1 border text-xs uppercase ${
+                        selectedColor === color
+                          ? "bg-black text-white"
+                          : ""
+                      }`}
+                    >
+                      {color}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
@@ -201,12 +234,12 @@ const navigate = useNavigate();
 
             {/* Buttons */}
             <div className="space-y-4 mb-10">
-            <button
-  onClick={handleAddToBag}
-  className="w-full h-14 bg-black text-white uppercase tracking-[4px] text-sm"
->
-  Add To Bag
-</button>
+              <button
+                onClick={handleAddToBag}
+                className="w-full h-14 bg-black text-white uppercase tracking-[4px] text-sm"
+              >
+                Add To Bag
+              </button>
 
               <button className="w-full h-14 border border-black uppercase tracking-[4px] text-sm flex items-center justify-center gap-3">
                 <Heart size={18} />
@@ -243,6 +276,28 @@ const navigate = useNavigate();
             </div>
 
           </div>
+        </section>
+
+        {/* Reviews */}
+        <section className="pb-24 border-t border-black/10 pt-12">
+          <h2 className="text-2xl font-semibold mb-8">Customer Reviews</h2>
+
+          {reviewLoading ? (
+            <p className="text-black/60">Loading reviews...</p>
+          ) : reviews.length === 0 ? (
+            <p className="text-black/60">No reviews yet.</p>
+          ) : (
+            <div className="space-y-6">
+              {reviews.map((review, index) => (
+                <div key={review._id || index} className="border-b border-black/10 pb-6">
+                 <p className="text-sm font-semibold mb-1">
+  {review.user?.name || "Anonymous"} — {"⭐".repeat(review.rating)}
+</p>
+                  <p className="text-sm text-black/60">{review.comment}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 
