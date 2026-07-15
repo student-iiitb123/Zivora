@@ -2,21 +2,49 @@ import { useState } from "react";
 import { Heart, ShoppingBag, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function RecommendedCard({ item }) {
+function RecommendedCard({
+  item,
+  onWishlist,
+  onAddToCart,
+  isWishlisted = false,
+}) {
   const navigate = useNavigate();
-  const [liked, setLiked] = useState(false);
+
+  const [liked, setLiked] = useState(isWishlisted);
   const [hovered, setHovered] = useState(false);
 
-  const image1 = item.image;
-  const image2 = item.image2 || item.image;
+  const image1 = item.media?.[0]?.url;
+  const image2 = item.media?.[1]?.url || image1;
 
-  const mrp = item.mrp || item.price;
-  const salePrice = item.salePrice || item.price;
+  const mrp = item.base_price || item.sale_price;
+  const salePrice = item.sale_price;
 
   const discount =
     mrp > salePrice
       ? Math.round(((mrp - salePrice) / mrp) * 100)
       : 0;
+
+  const handleWishlist = async (e) => {
+    e.stopPropagation();
+
+    try {
+      await onWishlist(item);
+
+      setLiked(!liked);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleCart = async (e) => {
+    e.stopPropagation();
+
+    try {
+      await onAddToCart(item);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div
@@ -30,11 +58,10 @@ function RecommendedCard({ item }) {
 
         <img
           src={hovered ? image2 : image1}
-          alt={item.name}
+          alt={item.product_name}
           className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
         />
 
-        {/* Discount */}
         {discount > 0 && (
           <span className="absolute top-4 left-4 bg-[#C6FF3A] text-black text-[10px] uppercase tracking-[2px] px-3 py-1 rounded-full font-semibold">
             {discount}% OFF
@@ -43,16 +70,12 @@ function RecommendedCard({ item }) {
 
         {/* Wishlist */}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setLiked(!liked);
-          }}
-          className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition
-            ${
-              liked
-                ? "bg-[#C6FF3A]"
-                : "bg-black/70 backdrop-blur hover:bg-black"
-            }`}
+          onClick={handleWishlist}
+          className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition ${
+            liked
+              ? "bg-[#C6FF3A]"
+              : "bg-black/70 backdrop-blur hover:bg-black"
+          }`}
         >
           <Heart
             size={18}
@@ -64,9 +87,9 @@ function RecommendedCard({ item }) {
           />
         </button>
 
-        {/* Add to Bag */}
+        {/* Add To Bag */}
         <button
-          onClick={(e) => e.stopPropagation()}
+          onClick={handleCart}
           className="absolute bottom-4 left-4 right-4 py-3 rounded-full bg-white text-black font-semibold uppercase tracking-[3px]
           flex items-center justify-center gap-2
           opacity-0 translate-y-4
@@ -76,7 +99,7 @@ function RecommendedCard({ item }) {
           hover:bg-[#C6FF3A]"
         >
           <ShoppingBag size={15} />
-          Add to Bag
+          Add To Bag
         </button>
       </div>
 
@@ -86,18 +109,20 @@ function RecommendedCard({ item }) {
         <div className="flex justify-between items-start">
 
           <h3 className="text-white font-semibold text-base">
-            {item.name}
+            {item.product_name}
           </h3>
 
-          {item.rating && (
+          {item.average_rating > 0 && (
             <span className="flex items-center gap-1 text-sm text-white/70">
               <Star
                 size={13}
                 className="fill-[#C6FF3A] text-[#C6FF3A]"
               />
-              {item.rating}
+
+              {item.average_rating}
             </span>
           )}
+
         </div>
 
         <p className="text-white/45 uppercase text-xs tracking-[2px] mt-2">
@@ -115,7 +140,9 @@ function RecommendedCard({ item }) {
               ₹{mrp}
             </span>
           )}
+
         </div>
+
       </div>
     </div>
   );
