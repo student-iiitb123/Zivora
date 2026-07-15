@@ -129,3 +129,4 @@ function FooterColumn({ title, links }) {
 
 //full fotter links added 
 //terms and policy added
+//add testonomial
