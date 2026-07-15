@@ -13,7 +13,6 @@ import StickyCartBar from "../components/StickyCartBar";
 import {
   getWishlist,
   removeFromWishlist,
-  moveWishlistToCart,
 } from "../../../services/wishlistService";
 import { addToCart } from "../../../services/cartService";
 
@@ -78,29 +77,35 @@ function WishlistPage() {
   };
 
   // Add To Cart
-  const handleAddToCart = async (product) => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
+  const handleAddAllToCart = async () => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-      if (!user?._id) {
-        navigate("/login");
-        return;
-      }
+    if (!user?._id) {
+      navigate("/login");
+      return;
+    }
 
+    for (const item of wishlist) {
       await addToCart({
         userId: user._id,
-        productId: product._id,
+        productId: item.product._id,
         quantity: 1,
-        size: product.sizes?.[0] || "",
-        color: product.colors?.[0] || "",
+        size: item.product.sizes?.[0] || "",
+        color: item.product.colors?.[0] || "",
       });
-
-      alert("Added to cart successfully ❤️");
-    } catch (err) {
-      console.log(err);
-      alert("Failed to add to cart.");
     }
-  };
+
+    await clearWishlist();
+
+    setWishlist([]);
+
+    alert("🎉 All wishlist items moved to cart!");
+  } catch (err) {
+    console.log(err);
+    alert("Something went wrong.");
+  }
+};
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">

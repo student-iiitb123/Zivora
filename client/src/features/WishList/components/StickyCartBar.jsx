@@ -41,24 +41,9 @@ function StickyCartBar({
 
           {/* Right */}
 
-          <button
-            onClick={onMoveAllToCart}
-            disabled={totalItems === 0}
-            className={`group rounded-full px-10 py-4 flex items-center gap-3 font-bold uppercase tracking-[3px] transition-all duration-300
-              ${
-                totalItems === 0
-                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                  : "bg-[#C6FF3A] hover:bg-white text-black hover:scale-105 active:scale-95"
-              }`}
-          >
-            Add All To Cart
-
-            <ArrowRight
-              size={18}
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            />
-
-          </button>
+        <button onClick={onAddAllToCart}>
+  Add All To Cart
+</button>
 
         </div>
       </div>
