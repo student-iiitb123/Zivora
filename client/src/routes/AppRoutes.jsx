@@ -21,6 +21,10 @@ import SettingsPage from "../features/admin/pages/SettingPage";
 import NewArrivalPage from "../pages/NewArrival";
 import DropSalesPage from "../pages/Sales";
 import CollectionPage from "../pages/CollectionPage";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import Terms from "../pages/Terms";
+import ShippingReturns from "../pages/ShippingReturns";
+
 
 function AppRoutes() {
   return (
@@ -40,8 +44,22 @@ function AppRoutes() {
       <Route path="/new-arrivals" element={<NewArrivalPage />} />
       <Route path="/sale" element={<DropSalesPage />} />
       <Route path="/collection" element= {<CollectionPage />} />
+       <Route
+    path="/privacy-policy"
+    element={<PrivacyPolicy />}
+/>
 
-      {/* Admin Routes */}
+<Route
+    path="/terms"
+    element={<Terms />}
+/>
+
+<Route
+    path="/shipping-returns"
+    element={<ShippingReturns />}
+/>      
+             
+             {/* Admin Routes */}
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
       <Route path="/admin/inventory" element={<AdminInventoryPage />} />
       <Route path="/admin/orders" element={<AdminOrdersPage />} />
