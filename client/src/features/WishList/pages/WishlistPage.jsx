@@ -13,8 +13,8 @@ import StickyCartBar from "../components/StickyCartBar";
 import {
   getWishlist,
   removeFromWishlist,
+  moveWishlistToCart,
 } from "../../../services/wishlistService";
-
 import { addToCart } from "../../../services/cartService";
 
 function WishlistPage() {
@@ -41,6 +41,28 @@ function WishlistPage() {
   useEffect(() => {
     fetchWishlist();
   }, []);
+
+
+  const handleMoveAllToCart = async () => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user?._id) {
+      navigate("/login");
+      return;
+    }
+
+    const { data } = await moveWishlistToCart();
+
+    alert(data.message || "All wishlist items moved to cart ❤️");
+
+    // Empty wishlist immediately
+    setWishlist([]);
+  } catch (err) {
+    console.log(err);
+    alert("Failed to move wishlist to cart.");
+  }
+};
 
   // Remove Item
   const handleRemove = async (productId) => {
@@ -110,7 +132,10 @@ function WishlistPage() {
       <WishlistFooter />
 
       {/* Sticky Cart */}
-      <StickyCartBar wishlist={wishlist} />
+    <StickyCartBar
+  wishlist={wishlist}
+  onMoveAllToCart={handleMoveAllToCart}
+/>
     </div>
   );
 }
