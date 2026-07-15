@@ -10,10 +10,7 @@ import {
 } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { getCart } from "../services/cartService";
-
-
-
-
+import { useWishlist } from "../context/WishlistContext";
 
 const MEGA_MENU = {
   Men: {
@@ -77,6 +74,8 @@ export default function Navbar() {
   const location = useLocation();
   const isLoggedIn = !!localStorage.getItem("token");
 
+  const { wishlistCount } = useWishlist();
+
   const queryParams = new URLSearchParams(location.search);
   const activeCategory = queryParams.get("category");
 
@@ -116,7 +115,7 @@ export default function Navbar() {
     }
   }, [searchOpen]);
 
-  // Lock body scroll behind the full-screen mobile menu  yvdyv
+  // Lock body scroll behind the full-screen mobile menu
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => {
@@ -155,37 +154,37 @@ export default function Navbar() {
   return (
     <>
       {/* ANNOUNCEMENT BAR */}
-  <div className="relative overflow-hidden bg-black text-[#D4AF6A] py-2">
-  <div className="announcement-marquee flex gap-12 whitespace-nowrap text-[11px] tracking-[2px] uppercase">
-    {Array(8) // more repeats = never runs out, whatever the screen width
-      .fill([
-        "Free shipping on orders above ₹999",
-        "New drops every week",
-        "Easy 7-day returns",
-      ])
-      .flat()
-      .map((text, i) => (
-        <span key={i} className="flex items-center gap-12 shrink-0">
-          {text}
-          <span className="text-[#D4AF6A]/40">•</span>
-        </span>
-      ))}
-  </div>
+      <div className="relative overflow-hidden bg-black text-[#D4AF6A] py-2">
+        <div className="announcement-marquee flex gap-12 whitespace-nowrap text-[11px] tracking-[2px] uppercase">
+          {Array(8)
+            .fill([
+              "Free shipping on orders above ₹999",
+              "New drops every week",
+              "Easy 7-day returns",
+            ])
+            .flat()
+            .map((text, i) => (
+              <span key={i} className="flex items-center gap-12 shrink-0">
+                {text}
+                <span className="text-[#D4AF6A]/40">•</span>
+              </span>
+            ))}
+        </div>
 
-  <style>{`
-    .announcement-marquee {
-      width: max-content;
-      animation: announcement-scroll 25s linear infinite;
-    }
-    @keyframes announcement-scroll {
-      from { transform: translateX(0); }
-      to { transform: translateX(-12.5%); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .announcement-marquee { animation: none; }
-    }
-  `}</style>
-</div>
+        <style>{`
+          .announcement-marquee {
+            width: max-content;
+            animation: announcement-scroll 25s linear infinite;
+          }
+          @keyframes announcement-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-12.5%); }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .announcement-marquee { animation: none; }
+          }
+        `}</style>
+      </div>
 
       <header
         id="main-nav"
@@ -199,11 +198,11 @@ export default function Navbar() {
           <div className="flex justify-between items-center py-4">
             {/* LOGO */}
             <Link to="/" className="flex flex-col items-start leading-none shrink-0">
-   <img
-  src="../../assets/katchy-logo.png"
-  alt="Katchy"
-className="h-20 w-auto object-contain scale-150 origin-left"
-/>
+              <img
+                src="../../assets/katchy-logo.png"
+                alt="Katchy"
+                className="h-20 w-auto object-contain scale-150 origin-left"
+              />
             </Link>
 
             {/* DESKTOP NAV */}
@@ -242,7 +241,6 @@ className="h-20 w-auto object-contain scale-150 origin-left"
                         />
                       </button>
 
-                      {/* small dropdown box, anchored under this link only */}
                       {isOpen && menu && (
                         <div className="absolute left-0 top-full mt-3 w-64 bg-white border border-black/10 rounded-xl shadow-xl overflow-hidden z-50">
                           {menu.columns.map((col) => (
@@ -340,8 +338,16 @@ className="h-20 w-auto object-contain scale-150 origin-left"
                   </>
                 ) : (
                   <>
-                    <Link to="/wishlist" className="text-neutral-800 hover:opacity-60 transition-opacity">
+                    <Link
+                      to="/wishlist"
+                      className="relative text-neutral-800 hover:opacity-60 transition-opacity"
+                    >
                       <Heart size={20} strokeWidth={1.6} />
+                      {wishlistCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                          {wishlistCount}
+                        </span>
+                      )}
                     </Link>
 
                     <Link to="/cart" className="relative text-neutral-800 hover:opacity-60 transition-opacity">
@@ -472,10 +478,15 @@ className="h-20 w-auto object-contain scale-150 origin-left"
                 <Link
                   onClick={closeMobileMenu}
                   to="/wishlist"
-                  className="flex flex-col items-center justify-center gap-2 bg-white/10 py-4 rounded-xl text-[11px] tracking-wide"
+                  className="relative flex flex-col items-center justify-center gap-2 bg-white/10 py-4 rounded-xl text-[11px] tracking-wide"
                 >
                   <Heart size={20} strokeWidth={1.6} />
                   Wishlist
+                  {wishlistCount > 0 && (
+                    <span className="absolute top-2 right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                      {wishlistCount}
+                    </span>
+                  )}
                 </Link>
                 <Link
                   onClick={closeMobileMenu}
