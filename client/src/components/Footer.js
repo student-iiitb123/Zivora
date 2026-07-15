@@ -1,40 +1,16 @@
 import { Link } from "react-router-dom";
 
-// Map every footer link label to its actual route.
-// Update the "#" placeholders once those pages exist.
-const FOOTER_LINK_MAP = {
-  // Collections
-  "Men's New Arrivals": "/products?category=Men&sort=new",
-  "Women's New Arrivals": "/products?category=Women&sort=new",
-  "Essential Basics": "/products",
-  "The Suit Studio": "/products",
-
-  // Customer Care
-  "Shipping & Returns": "/shipping-returns",
-  "Privacy Policy": "/privacy-policy",
-  "Terms of Service": "/terms",
-  "Stores": "#", // no route yet
-
-  // About
-  "Our Story": "#", // no route yet
-  "Sustainability": "#", // no route yet
-  "Careers": "#", // no route yet
-  "Press": "#", // no route yet
-};
-
 export default function Footer() {
   return (
     <footer className="bg-black text-white">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 sm:py-16 lg:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link to="/">
-              <img
-                src="../../assets/katchy-logo.png"
-                alt="Katchy"
-                className="h-20 lg:h-24 w-auto object-contain"
-              />
-            </Link>
+            <img
+              src="../../assets/katchy-logo.png"
+              alt="Katchy"
+              className="h-20 lg:h-24 w-auto object-contain"
+            />
 
             <p className="text-white/60 text-sm leading-relaxed max-w-xs mb-6 sm:mb-8">
               Redefining contemporary luxury through architectural silhouettes
@@ -43,10 +19,10 @@ export default function Footer() {
 
             <div className="flex gap-3">
               {["public", "share", "mail"].map((icon) => (
-                
+                <a
                   key={icon}
-                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
                   href="#"
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
                 >
                   <span className="material-symbols-outlined text-[18px]">
                     {icon}
@@ -78,7 +54,12 @@ export default function Footer() {
 
           <FooterColumn
             title="About"
-            links={["Our Story", "Sustainability", "Careers", "Press"]}
+            links={[
+              "Our Story",
+              "Sustainability",
+              "Careers",
+              "Press",
+            ]}
           />
         </div>
 
@@ -107,20 +88,39 @@ function FooterColumn({ title, links }) {
       </h4>
 
       <ul className="space-y-3 sm:space-y-4 text-sm text-white/60">
-        {links.map((link) => {
-          const href = FOOTER_LINK_MAP[link] || "#";
-
-          return (
-            <li key={link}>
+        {links.map((link) => (
+          <li key={link}>
+            {link === "Privacy Policy" ? (
               <Link
-                to={href}
+                to="/privacy-policy"
                 className="hover:text-white transition-colors"
               >
                 {link}
               </Link>
-            </li>
-          );
-        })}
+            ) : link === "Terms of Service" ? (
+              <Link
+                to="/terms"
+                className="hover:text-white transition-colors"
+              >
+                {link}
+              </Link>
+            ) : link === "Shipping & Returns" ? (
+              <Link
+                to="/shipping-returns"
+                className="hover:text-white transition-colors"
+              >
+                {link}
+              </Link>
+            ) : (
+              <a
+                href="#"
+                className="hover:text-white transition-colors"
+              >
+                {link}
+              </a>
+            )}
+          </li>
+        ))}
       </ul>
     </div>
   );
