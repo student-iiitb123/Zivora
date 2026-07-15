@@ -48,7 +48,7 @@ function RecommendedCard({
 
   return (
     <div
-      onClick={() => navigate(`/product/${item._id}`)}
+      onClick={() => navigate(`/products/${item._id}`)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="group min-w-[290px] cursor-pointer"
