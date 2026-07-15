@@ -13,7 +13,9 @@ import StickyCartBar from "../components/StickyCartBar";
 import {
   getWishlist,
   removeFromWishlist,
+  clearWishlist,
 } from "../../../services/wishlistService";
+
 import { addToCart } from "../../../services/cartService";
 
 function WishlistPage() {
@@ -22,7 +24,9 @@ function WishlistPage() {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // =========================
   // Fetch Wishlist
+  // =========================
   const fetchWishlist = async () => {
     try {
       setLoading(true);
@@ -41,29 +45,9 @@ function WishlistPage() {
     fetchWishlist();
   }, []);
 
-
-  const handleMoveAllToCart = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (!user?._id) {
-      navigate("/login");
-      return;
-    }
-
-    const { data } = await moveWishlistToCart();
-
-    alert(data.message || "All wishlist items moved to cart ❤️");
-
-    // Empty wishlist immediately
-    setWishlist([]);
-  } catch (err) {
-    console.log(err);
-    alert("Failed to move wishlist to cart.");
-  }
-};
-
-  // Remove Item
+  // =========================
+  // Remove Single Item
+  // =========================
   const handleRemove = async (productId) => {
     try {
       await removeFromWishlist(productId);
@@ -76,36 +60,76 @@ function WishlistPage() {
     }
   };
 
-  // Add To Cart
+  // =========================
+  // Move All Wishlist Items To Cart
+  // =========================
   const handleAddAllToCart = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem("user"));
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!user?._id) {
-      navigate("/login");
-      return;
+      if (!user?._id) {
+        navigate("/login");
+        return;
+      }
+
+      if (wishlist.length === 0) {
+        alert("Wishlist is empty.");
+        return;
+      }
+
+      for (const item of wishlist) {
+        await addToCart({
+          userId: user._id,
+          productId: item.product._id,
+          quantity: 1,
+          size: item.product.sizes?.[0] || "",
+          color: item.product.colors?.[0] || "",
+        });
+      }
+
+      await clearWishlist();
+
+      setWishlist([]);
+
+      alert("🎉 All wishlist items moved to cart successfully!");
+    } catch (err) {
+      console.log(err);
+      alert("Something went wrong.");
     }
+  };
 
-    for (const item of wishlist) {
+  // =========================
+  // Add Single Product To Cart
+  // =========================
+  const handleAddToCart = async (product) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!user?._id) {
+        navigate("/login");
+        return;
+      }
+
       await addToCart({
         userId: user._id,
-        productId: item.product._id,
+        productId: product._id,
         quantity: 1,
-        size: item.product.sizes?.[0] || "",
-        color: item.product.colors?.[0] || "",
+        size: product.sizes?.[0] || "",
+        color: product.colors?.[0] || "",
       });
+
+      await removeFromWishlist(product._id);
+
+      setWishlist((prev) =>
+        prev.filter((item) => item.product._id !== product._id)
+      );
+
+      alert("Added to cart ❤️");
+    } catch (err) {
+      console.log(err);
+      alert("Failed to add to cart.");
     }
-
-    await clearWishlist();
-
-    setWishlist([]);
-
-    alert("🎉 All wishlist items moved to cart!");
-  } catch (err) {
-    console.log(err);
-    alert("Something went wrong.");
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -137,10 +161,10 @@ function WishlistPage() {
       <WishlistFooter />
 
       {/* Sticky Cart */}
-    <StickyCartBar
-  wishlist={wishlist}
-  onMoveAllToCart={handleMoveAllToCart}
-/>
+      <StickyCartBar
+        wishlist={wishlist}
+        onMoveAllToCart={handleAddAllToCart}
+      />
     </div>
   );
 }
