@@ -125,3 +125,6 @@ function FooterColumn({ title, links }) {
     </div>
   );
 }
+
+
+//full fotter links added 
