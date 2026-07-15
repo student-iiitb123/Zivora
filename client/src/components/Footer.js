@@ -125,3 +125,5 @@ function FooterColumn({ title, links }) {
     </div>
   );
 }
+
+//footer done 
