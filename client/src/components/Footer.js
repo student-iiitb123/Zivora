@@ -1,136 +1,90 @@
 import { Link } from "react-router-dom";
 
+// Map every footer link label to its actual route.
+// Update the "#" placeholders once those pages exist.
+const FOOTER_LINK_MAP = {
+  // Collections
+  "Men's New Arrivals": "/products?category=Men&sort=new",
+  "Women's New Arrivals": "/products?category=Women&sort=new",
+  "Essential Basics": "/products",
+  "The Suit Studio": "/products",
+
+  // Customer Care
+  "Shipping & Returns": "/shipping-returns",
+  "Privacy Policy": "/privacy-policy",
+  "Terms of Service": "/terms",
+  "Stores": "#", // no route yet
+
+  // About
+  "Our Story": "#", // no route yet
+  "Sustainability": "#", // no route yet
+  "Careers": "#", // no route yet
+  "Press": "#", // no route yet
+};
+
 export default function Footer() {
-  const collections = [
-    {
-      name: "Men's New Arrivals",
-      path: "/products?category=men",
-    },
-    {
-      name: "Women's New Arrivals",
-      path: "/products?category=women",
-    },
-    {
-      name: "Essential Basics",
-      path: "/products?collection=basics",
-    },
-    {
-      name: "The Suit Studio",
-      path: "/products?collection=suits",
-    },
-  ];
-
-  const customerCare = [
-    {
-      name: "Shipping & Returns",
-      path: "/shipping&returns",
-    },
-    {
-      name: "Privacy Policy",
-      path: "/privacy-policy",
-    },
-    {
-      name: "Terms of Service",
-      path: "/terms-of-service",
-    },
-    {
-      name: "Stores",
-      path: "/stores",
-    },
-  ];
-
-  const about = [
-    {
-      name: "Our Story",
-      path: "/about",
-    },
-    {
-      name: "Sustainability",
-      path: "/sustainability",
-    },
-    {
-      name: "Careers",
-      path: "/careers",
-    },
-    {
-      name: "Press",
-      path: "/press",
-    },
-  ];
-
   return (
     <footer className="bg-black text-white">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 sm:py-16 lg:py-20">
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-
-          {/* Logo */}
           <div className="sm:col-span-2 lg:col-span-1">
+            <Link to="/">
+              <img
+                src="../../assets/katchy-logo.png"
+                alt="Katchy"
+                className="h-20 lg:h-24 w-auto object-contain"
+              />
+            </Link>
 
-            <img
-              src="../../assets/katchy-logo.png"
-              alt="Katchy"
-              className="h-20 lg:h-24 w-auto object-contain"
-            />
-
-            <p className="text-white/60 text-sm leading-relaxed max-w-xs mb-8">
+            <p className="text-white/60 text-sm leading-relaxed max-w-xs mb-6 sm:mb-8">
               Redefining contemporary luxury through architectural silhouettes
               and enduring quality.
             </p>
 
             <div className="flex gap-3">
-
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
-              >
-                <span className="material-symbols-outlined text-[18px]">
-                  public
-                </span>
-              </a>
-
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
-              >
-                <span className="material-symbols-outlined text-[18px]">
-                  share
-                </span>
-              </a>
-
-              <a
-                href="mailto:support@katchy.com"
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
-              >
-                <span className="material-symbols-outlined text-[18px]">
-                  mail
-                </span>
-              </a>
-
+              {["public", "share", "mail"].map((icon) => (
+                
+                  key={icon}
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                  href="#"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    {icon}
+                  </span>
+                </a>
+              ))}
             </div>
           </div>
 
           <FooterColumn
             title="Collections"
-            links={collections}
+            links={[
+              "Men's New Arrivals",
+              "Women's New Arrivals",
+              "Essential Basics",
+              "The Suit Studio",
+            ]}
           />
 
           <FooterColumn
             title="Customer Care"
-            links={customerCare}
+            links={[
+              "Shipping & Returns",
+              "Privacy Policy",
+              "Terms of Service",
+              "Stores",
+            ]}
           />
 
           <FooterColumn
             title="About"
-            links={about}
+            links={["Our Story", "Sustainability", "Careers", "Press"]}
           />
-
         </div>
 
         <div className="mt-12 sm:mt-16 lg:mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
-
           <p className="text-[11px] sm:text-xs uppercase tracking-widest text-white/40">
-            © 2026 KATCHY. All Rights Reserved.
+            © 2024 ZIVORA. All Rights Reserved.
           </p>
 
           <div className="flex flex-wrap gap-4 sm:gap-6 text-[11px] sm:text-xs uppercase tracking-widest text-white/40">
@@ -139,9 +93,7 @@ export default function Footer() {
             <span>Amex</span>
             <span>Apple Pay</span>
           </div>
-
         </div>
-
       </div>
     </footer>
   );
@@ -150,26 +102,26 @@ export default function Footer() {
 function FooterColumn({ title, links }) {
   return (
     <div>
-
       <h4 className="text-xs sm:text-sm uppercase tracking-[3px] sm:tracking-[4px] mb-5 sm:mb-6">
         {title}
       </h4>
 
       <ul className="space-y-3 sm:space-y-4 text-sm text-white/60">
+        {links.map((link) => {
+          const href = FOOTER_LINK_MAP[link] || "#";
 
-        {links.map((link) => (
-          <li key={link.name}>
-            <Link
-              to={link.path}
-              className="hover:text-white transition-colors duration-300"
-            >
-              {link.name}
-            </Link>
-          </li>
-        ))}
-
+          return (
+            <li key={link}>
+              <Link
+                to={href}
+                className="hover:text-white transition-colors"
+              >
+                {link}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
-
     </div>
   );
 }
